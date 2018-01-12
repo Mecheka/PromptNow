@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/loginBG"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgDevice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_launcher" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvBrand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Brand"
+                        android:textColor="@color/textColorSingin"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tvName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="Name"
+                        android:textColor="@color/textColorSingin"
+                        android:textSize="20sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <TextView
+                        android:id="@+id/tvCPU"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:maxLines="2"
+                        android:text="CPU"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvRam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Ram"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvRom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Rom"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvSize"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Displaysize"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tvOS"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="OS"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp">
+
+                <com.rilixtech.materialfancybutton.MaterialFancyButton
+                    android:id="@+id/btnAddItem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="10dp"
+                    fancy:mfb_defaultColor="@color/loginBG"
+                    fancy:mfb_focusColor="@color/loginBHFO"
+                    fancy:mfb_radius="30dp"
+                    fancy:mfb_text="@string/add_item"
+                    fancy:mfb_textSize="16sp" />
+
+                <com.rilixtech.materialfancybutton.MaterialFancyButton
+                    android:id="@+id/btnUpdate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="10dp"
+                    android:layout_marginLeft="8dp"
+                    fancy:mfb_defaultColor="@color/buttonupdateDF"
+                    fancy:mfb_focusColor="@color/buttonupdateFC"
+                    fancy:mfb_radius="30dp"
+                    fancy:mfb_text="@string/update"
+                    fancy:mfb_textSize="16sp" />
+
+                <com.rilixtech.materialfancybutton.MaterialFancyButton
+                    android:id="@+id/btnDelete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_marginLeft="8dp"
+                    android:paddingTop="10dp"
+                    fancy:mfb_defaultColor="@color/RED"
+                    fancy:mfb_focusColor="@color/buttondeleteFC"
+                    fancy:mfb_radius="30dp"
+                    fancy:mfb_text="@string/delete"
+                    fancy:mfb_textSize="16sp" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Item List"
+                    android:textSize="16sp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"/>
+
+                <ListView
+                    android:id="@+id/listViewItem"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

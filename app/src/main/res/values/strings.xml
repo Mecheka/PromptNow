@@ -1,0 +1,61 @@
+<resources>
+
+    <string name="app_name">PromptNow</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="singup">Sing up</string>
+    <string name="login">Log in</string>
+    <string name="or">OR</string>
+    <string name="name">Name</string>
+    <string name="lastname">Lastname</string>
+    <string name="phone">Phone</string>
+    <string name="admin">Admin</string>
+    <string name="employee">Employee</string>
+    <string name="save">Save</string>
+    <string name="logout">Logout</string>
+    <string name="open_menu">Open Menu</string>
+    <string name="close_menu">Close Menu</string>
+    <string name="fawi_star">star</string>
+    <string name="profile">Profile</string>
+    <string name="update">Update</string>
+    <string name="add_item">Add Item</string>
+    <string name="delete">Delete</string>
+    <string name="add_device">Add Device</string>
+    <string name="land">Lend</string>
+    <string name="return_device">Return</string>
+    <string name="rule">Rule</string>
+    <string name="pos">Position</string>
+
+    <!-- SpPos -->
+    <string-array name="pos">
+
+        <item>Android Developer</item>
+        <item>Senior Android Developer</item>
+
+    </string-array>
+
+    <!-- SpBrand -->
+    <string-array name="brand">
+
+        <item>Samsung</item>
+        <item>ASUS</item>
+        <item>OPPO</item>
+        <item>Apple</item>
+        <item>Huawei</item>
+        <item>nubia</item>
+        <item>SONY</item>
+        <item>Nokia</item>
+
+    </string-array>
+
+    <!-- SpStatusItem -->
+    <string-array name="statusitem">
+
+        <item>Done</item>
+        <item>Lend</item>
+        <item>Return</item>
+        <item>Defective</item>
+
+    </string-array>
+
+</resources>

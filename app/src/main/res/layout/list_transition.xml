@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <ImageView
+        android:id="@+id/imgDevice"
+        android:layout_width="92dp"
+        android:layout_height="92dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/tvBrandName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/imgDevice"
+        android:text="Brand"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tvBrandName"
+        android:layout_toRightOf="@id/imgDevice"
+        android:text="Serail Number"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvEmpName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="EmpLendName"
+        android:layout_toRightOf="@id/imgDevice"
+        android:layout_below="@id/tvNumber"
+        android:textSize="18sp"
+        android:visibility="gone"/>
+
+</RelativeLayout>

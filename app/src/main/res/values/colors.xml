@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FFFFFF</color>
+    <color name="windowBackground">#FFFFFF</color>
+    <color name="navigationBarColor">#000000</color>
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="RED">#F44336</color>
+    <color name="lendstate">#F44336</color>
+    <color name="donestate">#4CAF50</color>
+    <color name="buttondeleteFC">#E57373</color>
+    <color name="green">#00c900</color>
+    <color name="loginBG">#1565C0</color>
+    <color name="loginBHFO">#42A5F5</color>
+    <color name="textColorSingin">#FFFFFF</color>
+    <color name="tabOR">#424242</color>
+    <color name="dialogBG">#FAFAFA</color>
+    <color name="buttonupdateDF">#4CAF50</color>
+    <color name="buttonupdateFC">#81C784</color>
+</resources>
