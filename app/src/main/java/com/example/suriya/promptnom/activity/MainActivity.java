@@ -1,8 +1,12 @@
 package com.example.suriya.promptnom.activity;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.res.Configuration;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -28,7 +32,6 @@ import com.example.suriya.promptnom.fragment.DeviceFragment;
 import com.example.suriya.promptnom.fragment.TransitonFragment;
 import com.example.suriya.promptnom.adapter.ViewPagerAdapter;
 import com.example.suriya.promptnom.manager.EmployeeManager;
-import com.example.suriya.promptnom.service.CountItem;
 import com.example.suriya.promptnom.service.ListenTransition;
 import com.example.suriya.promptnom.util.Transition;
 import com.google.firebase.auth.FirebaseAuth;
@@ -59,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mDataRefUserTran;
     private List<Transition> tranList = new ArrayList<>();
     private int firstLogin = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

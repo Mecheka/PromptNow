@@ -45,10 +45,6 @@
             android:theme="@style/usertextcolor" />
 
         <service
-            android:name=".service.ListenTransition"
-            android:enabled="true"
-            android:exported="true" />
-        <service
             android:name=".service.CountItem"
             android:enabled="true"
             android:exported="true"></service>
