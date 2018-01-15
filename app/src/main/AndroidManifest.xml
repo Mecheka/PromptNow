@@ -35,7 +35,8 @@
             android:name=".activity.DeviceDetailActivity"
             android:theme="@style/usertextcolor" />
         <activity android:name=".activity.DeviceDetailEmpActivity" />
-        <activity android:name=".activity.TransitionDetailActivity" />
+        <activity android:name=".activity.TransitionDetailActivity"
+            android:theme="@style/NoActionBar"/>
         <activity
             android:name=".activity.UserinfoUpdateActivity"
             android:theme="@style/usertextcolor" />

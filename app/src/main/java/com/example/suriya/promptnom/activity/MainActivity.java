@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_MAIN);
                 //startActivity(new Intent(this, UserInfoActivity.class));
             } else {
-                Toast.makeText(this, "Welcome " + displayName, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Welcome " + displayName, Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -244,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         String countItem = String.valueOf(tranList.size());
-                        Toast.makeText(MainActivity.this, "มีอุปกรณ์ที่คุณยืมทั้งหมด " + countItem, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "มีอุปกรณ์ที่คุณยืมทั้งหมด " + countItem, Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         String countItem = String.valueOf(tranList.size());
-                        Toast.makeText(MainActivity.this, "มีอุปกนณ์ที่ถูกยืม " + countItem, Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this, "มีอุปกนณ์ที่ถูกยืม " + countItem, Toast.LENGTH_SHORT).show();
 
                     }
 
@@ -284,7 +284,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Intent service = new Intent(MainActivity.this, ListenTransition.class);
-        service.putExtra("service", firstLogin);
         startService(service);
 
     }

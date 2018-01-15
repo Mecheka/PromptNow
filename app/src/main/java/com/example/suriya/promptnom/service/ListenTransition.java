@@ -51,9 +51,9 @@ public class ListenTransition extends Service implements ChildEventListener {
         FirebaseUser user = mAuth.getCurrentUser();
         if (ruleID != null) {
             if (ruleID.equals("Admin")) {
-                if (firshLogin != 0) {
-                    mDataRefTran.addChildEventListener(this);
-                }
+
+                mDataRefTran.addChildEventListener(this);
+
             }
         }
         return super.onStartCommand(intent, flags, startId);
