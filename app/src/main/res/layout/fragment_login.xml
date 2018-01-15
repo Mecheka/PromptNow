@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/loginBG"
@@ -10,14 +11,16 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_gravity="center"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:src="@drawable/icon_promptnow" />
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:textColorHint="@color/graylith">
 
         <EditText
             android:id="@+id/editTextEmail"
@@ -33,7 +36,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp">
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/graylith">
 
         <EditText
             android:id="@+id/editTextPass"
@@ -46,29 +51,30 @@
     </android.support.design.widget.TextInputLayout>
 
     <com.rilixtech.materialfancybutton.MaterialFancyButton
-    android:id="@+id/btnLogin"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:layout_marginBottom="8dp"
-    android:layout_marginTop="8dp"
-    android:paddingBottom="10dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="10dp"
-    fancy:mfb_borderColor="#FFFFFF"
-    fancy:mfb_borderWidth="1dp"
-    fancy:mfb_defaultColor="@color/loginBG"
-    fancy:mfb_focusColor="@color/loginBHFO"
-    fancy:mfb_radius="30dp"
-    fancy:mfb_text="@string/login"
-    fancy:mfb_textSize="16sp" />
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="10dp"
+        fancy:mfb_borderColor="#FFFFFF"
+        fancy:mfb_borderWidth="1dp"
+        fancy:mfb_defaultColor="@color/loginBG"
+        fancy:mfb_focusColor="@color/loginBHFO"
+        fancy:mfb_radius="30dp"
+        fancy:mfb_text="@string/login"
+        fancy:mfb_textSize="16sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <View
@@ -100,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="5dp"
+        android:layout_marginTop="10dp"
         android:text="@string/singup"
         android:textColor="@color/textColorSingin"
         android:textSize="16sp" />

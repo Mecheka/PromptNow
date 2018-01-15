@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.suriya.promptnom.R;
@@ -27,6 +28,7 @@ public class SingupFragment extends Fragment implements View.OnClickListener {
 
     private EditText editTextEmail, editTextPass;
     private com.rilixtech.materialfancybutton.MaterialFancyButton btnSingup;
+    private TextView tvBactToLogin;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingDialog;
 
@@ -60,7 +62,11 @@ public class SingupFragment extends Fragment implements View.OnClickListener {
         editTextEmail = (EditText) rootView.findViewById(R.id.editTextEmail);
         editTextPass = (EditText) rootView.findViewById(R.id.editTextPass);
         btnSingup = (MaterialFancyButton) rootView.findViewById(R.id.btnSingup);
+        tvBactToLogin = (TextView) rootView.findViewById(R.id.tvBacttologin);
+
         btnSingup.setOnClickListener(this);
+        tvBactToLogin.setOnClickListener(this);
+
     }
 
     @Override
@@ -98,7 +104,10 @@ public class SingupFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btnSingup:
                 singupemail();
-                                break;
+                break;
+
+            case R.id.tvBacttologin:
+                getFragmentManager().popBackStack();
         }
     }
 

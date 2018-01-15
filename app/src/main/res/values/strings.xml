@@ -25,6 +25,7 @@
     <string name="return_device">Return</string>
     <string name="rule">Rule</string>
     <string name="pos">Position</string>
+    <string name="back_to_login">Back to Login</string>
 
     <!-- SpPos -->
     <string-array name="pos">
