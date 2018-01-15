@@ -163,6 +163,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                     Log.d("RuleID ", emp.getRuleID());
                                     Intent intent = new Intent(getActivity().getApplicationContext(),
                                             MainActivity.class);
+                                    intent.putExtra("first", 1);
                                     startActivity(intent);
                                     getActivity().finish();
                                 }

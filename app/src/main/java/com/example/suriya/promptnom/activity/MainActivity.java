@@ -29,6 +29,7 @@ import com.example.suriya.promptnom.fragment.TransitonFragment;
 import com.example.suriya.promptnom.adapter.ViewPagerAdapter;
 import com.example.suriya.promptnom.manager.EmployeeManager;
 import com.example.suriya.promptnom.service.CountItem;
+import com.example.suriya.promptnom.service.ListenTransition;
 import com.example.suriya.promptnom.util.Transition;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,7 +41,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navView;
     private FirebaseAuth mAuth;
     private DatabaseReference mData;
+    private DatabaseReference mDataRefTran;
+    private DatabaseReference mDataRefUserTran;
+    private List<Transition> tranList = new ArrayList<>();
+    private int firstLogin = 0;
 
 
     @Override
@@ -64,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         mData = FirebaseDatabase.getInstance().getReference("Employee");
+        mDataRefUserTran = FirebaseDatabase.getInstance().getReference("User-Transition");
+        mDataRefTran = FirebaseDatabase.getInstance().getReference("Transition");
         initInstace();
         loadUserProfile();
 
@@ -80,8 +86,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-        Intent service = new Intent(MainActivity.this, CountItem.class);
-        startService(service);
     }
 
     private void initInstace() {
@@ -208,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                                 .apply(RequestOptions.circleCropTransform())
                                 .into(imgProfile);
                     }
-                    if (disName!=null){
+                    if (disName != null) {
                         tvDisplayName.setText(disName);
                     }
                     if (user.getEmail() != null) {
@@ -225,16 +229,64 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        String userID = mAuth.getCurrentUser().getUid();
+        String ruleId = EmployeeManager.getInstance().getRuleID();
+        if (firstLogin == 0) {
+            if (ruleId.equals("Employee")) {
+                mDataRefUserTran.child(userID).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        tranList.clear();
+                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                            Transition tran = ds.getValue(Transition.class);
+                            if (tran.isLendState() == true) {
+                                tranList.add(tran);
+                            }
+                        }
+                        String countItem = String.valueOf(tranList.size());
+                        Toast.makeText(MainActivity.this, "มีอุปกรณ์ที่คุณยืมทั้งหมด " + countItem, Toast.LENGTH_LONG).show();
 
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                firstLogin = getIntent().getIntExtra("first", 0);
+            }else {
+                mDataRefTran.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        tranList.clear();
+                        for (DataSnapshot ds : dataSnapshot.getChildren()){
+                            Transition tran = ds.getValue(Transition.class);
+                            if (tran.isLendState() == true){
+                                tranList.add(tran);
+                            }
+                        }
+                        String countItem = String.valueOf(tranList.size());
+                        Toast.makeText(MainActivity.this, "มีอุปกนณ์ที่ถูกยืม " + countItem, Toast.LENGTH_LONG).show();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                firstLogin = getIntent().getIntExtra("first", 0);
+            }
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Intent service = new Intent(MainActivity.this, CountItem.class);
+        Intent service = new Intent(MainActivity.this, ListenTransition.class);
+        service.putExtra("service", firstLogin);
         startService(service);
-        String userID = mAuth.getCurrentUser().getUid();
-        
+
     }
 
     @Override

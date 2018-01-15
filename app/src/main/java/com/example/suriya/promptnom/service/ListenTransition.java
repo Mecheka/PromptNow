@@ -29,6 +29,7 @@ public class ListenTransition extends Service implements ChildEventListener {
     DatabaseReference mDataRefTran;
     DatabaseReference mDataRefUserTran;
     FirebaseAuth mAuth;
+    int firshLogin = 0;
 
     public ListenTransition() {
     }
@@ -50,9 +51,9 @@ public class ListenTransition extends Service implements ChildEventListener {
         FirebaseUser user = mAuth.getCurrentUser();
         if (ruleID != null) {
             if (ruleID.equals("Admin")) {
-                mDataRefTran.addChildEventListener(this);
-            } else {
-                mDataRefUserTran.child(user.getUid()).addChildEventListener(this);
+                if (firshLogin != 0) {
+                    mDataRefTran.addChildEventListener(this);
+                }
             }
         }
         return super.onStartCommand(intent, flags, startId);
@@ -70,6 +71,29 @@ public class ListenTransition extends Service implements ChildEventListener {
         if (tran.isLendState() == true) {
             showNotification(tran);
         }
+
+    }
+
+    @Override
+    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+        Transition changedTran = dataSnapshot.getValue(Transition.class);
+        if (changedTran.isLendState() == false) {
+            showNotificationChanged(changedTran);
+        }
+    }
+
+    @Override
+    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+    }
+
+    @Override
+    public void onCancelled(DatabaseError databaseError) {
 
     }
 
@@ -94,23 +118,24 @@ public class ListenTransition extends Service implements ChildEventListener {
 
     }
 
-    @Override
-    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+    private void showNotificationChanged(Transition changedTran) {
 
-    }
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(getBaseContext(), 0, intent, 0);
 
-    @Override
-    public void onChildRemoved(DataSnapshot dataSnapshot) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext());
 
-    }
+        builder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setTicker("PromptNow")
+                .setContentInfo("Return Device")
+                .setContentText("Return Device")
+                .setSmallIcon(R.mipmap.ic_launcher);
 
-    @Override
-    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+        NotificationManager manager = (NotificationManager) getBaseContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
-    }
-
-    @Override
-    public void onCancelled(DatabaseError databaseError) {
+        int randomInt = new Random().nextInt(9999 - 1) + 1;
+        manager.notify(randomInt, builder.build());
 
     }
 }
