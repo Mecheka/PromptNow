@@ -11,7 +11,8 @@ import com.example.suriya.promptnom.R;
 /**
  * Created by nuuneoi on 11/16/2014.
  */
-public class FragmentTemplate extends Fragment {
+public class
+FragmentTemplate extends Fragment {
 
     public FragmentTemplate() {
         super();

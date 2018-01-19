@@ -8,7 +8,7 @@
     <string name="or">OR</string>
     <string name="name">Name</string>
     <string name="lastname">Lastname</string>
-    <string name="phone">Phone</string>
+    <string name="phone">Phone number</string>
     <string name="admin">Admin</string>
     <string name="employee">Employee</string>
     <string name="save">Save</string>

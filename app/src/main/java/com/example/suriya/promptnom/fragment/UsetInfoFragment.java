@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -159,11 +160,26 @@ public class UsetInfoFragment extends Fragment {
             edittextPhone.requestFocus();
             return;
         }
+        if (phone.length() < 10){
+            edittextPhone.setError("Your phone number less than 10");
+            edittextPhone.requestFocus();
+            return;
+        }
+        if (isValidPhone(phone) == false){
+            edittextPhone.setError("This is not a phone number.");
+            edittextPhone.requestFocus();
+            return;
+        }
 
         Employee emp = new Employee(id, name, lastname, rule, pos, phone, email);
         mData.child(id).setValue(emp);
         uploadImageFirebase();
 
+    }
+
+    private boolean isValidPhone(String phone){
+
+        return Patterns.PHONE.matcher(phone).matches();
     }
 
     private void backToMain() {

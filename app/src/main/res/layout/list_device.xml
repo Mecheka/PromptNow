@@ -20,4 +20,11 @@
         android:text="DeviceName"
         android:textSize="18sp" />
 
+    <ImageView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_arrow"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"/>
+
 </RelativeLayout>

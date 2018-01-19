@@ -1,12 +1,8 @@
 package com.example.suriya.promptnom.activity;
 
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.res.Configuration;
-import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -72,21 +68,22 @@ public class MainActivity extends AppCompatActivity {
         mData = FirebaseDatabase.getInstance().getReference("Employee");
         mDataRefUserTran = FirebaseDatabase.getInstance().getReference("User-Transition");
         mDataRefTran = FirebaseDatabase.getInstance().getReference("Transition");
-        initInstace();
-        loadUserProfile();
 
         FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
+        if (user == null) {
+            finish();
+            Intent loginIntent = new Intent(MainActivity.this, LoginandSignupActivity.class);
+            startActivity(loginIntent);
+        } else {
             String displayName = user.getDisplayName();
             if (displayName == null) {
                 Toast.makeText(this, "ไม่มีข้อมูล", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(this, UserInfoActivity.class);
-                startActivityForResult(intent, REQUEST_MAIN);
                 //startActivity(new Intent(this, UserInfoActivity.class));
             } else {
                 Toast.makeText(this, "Welcome " + displayName, Toast.LENGTH_SHORT).show();
             }
-
+            initInstace();
+            loadUserProfile();
         }
     }
 
@@ -185,17 +182,18 @@ public class MainActivity extends AppCompatActivity {
 
         String ruleID = EmployeeManager.getInstance().getRuleID();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        if (ruleID.equals("Admin")) {
-            adapter.addFragment(DeviceFragment.newInstance(), "อุปกรณ์");
-            adapter.addFragment(TransitonFragment.newInstance(), "รายการยืม");
-            adapter.addFragment(AllTransitionFragment.newInstance(), "ประวัติการยืมอุปกรณ์");
-            viewPager.setAdapter(adapter);
-        } else {
-            adapter.addFragment(DeviceFragment.newInstance(), "ยืมอุปกรณ์");
-            adapter.addFragment(TransitonFragment.newInstance(), "รายการยืม");
-            adapter.addFragment(AllTransitionFragment.newInstance(), "ประวัติการยืมอุปกรณ์");
-            viewPager.setAdapter(adapter);
+        if (ruleID != null) {
+            if (ruleID.equals("Admin")) {
+                adapter.addFragment(DeviceFragment.newInstance(), "อุปกรณ์");
+                adapter.addFragment(TransitonFragment.newInstance(), "รายการยืม");
+                adapter.addFragment(AllTransitionFragment.newInstance(), "ประวัติการยืมอุปกรณ์");
+                viewPager.setAdapter(adapter);
+            } else {
+                adapter.addFragment(DeviceFragment.newInstance(), "ยืมอุปกรณ์");
+                adapter.addFragment(TransitonFragment.newInstance(), "รายการยืม");
+                adapter.addFragment(AllTransitionFragment.newInstance(), "ประวัติการยืมอุปกรณ์");
+                viewPager.setAdapter(adapter);
+            }
         }
     }
 
@@ -234,50 +232,52 @@ public class MainActivity extends AppCompatActivity {
         String userID = mAuth.getCurrentUser().getUid();
         String ruleId = EmployeeManager.getInstance().getRuleID();
         if (firstLogin == 0) {
-            if (ruleId.equals("Employee")) {
-                mDataRefUserTran.child(userID).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        tranList.clear();
-                        for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                            Transition tran = ds.getValue(Transition.class);
-                            if (tran.isLendState() == true) {
-                                tranList.add(tran);
+            if (ruleId != null) {
+                if (ruleId.equals("Employee")) {
+                    mDataRefUserTran.child(userID).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            tranList.clear();
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                Transition tran = ds.getValue(Transition.class);
+                                if (tran.isLendState() == true) {
+                                    tranList.add(tran);
+                                }
                             }
+                            String countItem = String.valueOf(tranList.size());
+                            Toast.makeText(MainActivity.this, "มีอุปกรณ์ที่คุณยืมทั้งหมด " + countItem, Toast.LENGTH_SHORT).show();
+
                         }
-                        String countItem = String.valueOf(tranList.size());
-                        Toast.makeText(MainActivity.this, "มีอุปกรณ์ที่คุณยืมทั้งหมด " + countItem, Toast.LENGTH_SHORT).show();
 
-                    }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-                firstLogin = getIntent().getIntExtra("first", 0);
-            }else {
-                mDataRefTran.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        tranList.clear();
-                        for (DataSnapshot ds : dataSnapshot.getChildren()){
-                            Transition tran = ds.getValue(Transition.class);
-                            if (tran.isLendState() == true){
-                                tranList.add(tran);
+                        }
+                    });
+                    firstLogin = getIntent().getIntExtra("first", 0);
+                } else {
+                    mDataRefTran.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            tranList.clear();
+                            for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                Transition tran = ds.getValue(Transition.class);
+                                if (tran.isLendState() == true) {
+                                    tranList.add(tran);
+                                }
                             }
+                            String countItem = String.valueOf(tranList.size());
+                            Toast.makeText(MainActivity.this, "มีอุปกนณ์ที่ถูกยืม " + countItem, Toast.LENGTH_SHORT).show();
+
                         }
-                        String countItem = String.valueOf(tranList.size());
-                        Toast.makeText(MainActivity.this, "มีอุปกนณ์ที่ถูกยืม " + countItem, Toast.LENGTH_SHORT).show();
 
-                    }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-                firstLogin = getIntent().getIntExtra("first", 0);
+                        }
+                    });
+                    firstLogin = getIntent().getIntExtra("first", 0);
+                }
             }
         }
     }
@@ -285,9 +285,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        Intent service = new Intent(MainActivity.this, ListenTransition.class);
-        startService(service);
-
     }
 
     @Override

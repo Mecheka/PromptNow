@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.suriya.promptnom.R;
@@ -17,7 +18,8 @@ import com.inthecheesefactory.thecheeselibrary.view.state.BundleSavedState;
  */
 public class ListItemDevice extends BaseCustomViewGroup {
 
-    private TextView tvNumber, tvStatus;
+    private TextView tvNumber;
+    private ImageView imgStatusItem;
 
     public ListItemDevice(Context context) {
         super(context);
@@ -54,19 +56,19 @@ public class ListItemDevice extends BaseCustomViewGroup {
     private void initInstances() {
         // findViewById here
         tvNumber = (TextView) findViewById(R.id.tvNumber);
-        tvStatus = (TextView) findViewById(R.id.tvStatus);
     }
 
     public void setTextNumber(String text) {
         tvNumber.setText(text);
     }
 
-    public void setStatusText(String text) {
-        tvStatus.setText(text);
-        if (text.equals("Lend")) {
-            tvStatus.setTextColor(getResources().getColor(R.color.lendstate));
-        }else if (text.equals("Done")){
-            tvStatus.setTextColor(getResources().getColor(R.color.donestate));
+    public void setIconStatus(String status){
+        if (status.equals("Lend")){
+            imgStatusItem.setImageResource(R.drawable.ic_lend);
+            imgStatusItem.setVisibility(VISIBLE);
+        }else {
+            imgStatusItem.setImageResource(R.drawable.ic_done);
+            imgStatusItem.setVisibility(VISIBLE);
         }
     }
 

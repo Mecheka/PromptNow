@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -8,53 +8,60 @@
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_gravity="center"
+        android:id="@+id/icon"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:src="@drawable/icon_promptnow" />
 
-    <android.support.design.widget.TextInputLayout
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/editTextEmail"
+        android:layout_below="@id/icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:textColorHint="@color/graylith">
+        android:layout_marginTop="10dp"
+        android:hint="@string/email"
+        android:textColorHint="@color/graylith"
+        android:textSize="20sp"
+        app:met_baseColor="@color/graylith"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@android:color/white"
+        app:met_singleLineEllipsis="true"
+        fancy:met_textColorHint="@color/graylith"
+        fancy:met_underlineColor="@color/graylith"
+        android:inputType="textEmailAddress"/>
 
-        <EditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress"
-            android:textColor="@color/textColorSingin" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:layout_below="@id/editTextEmail"
+        android:id="@+id/editTextPass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="8dp"
-        android:textColorHint="@color/graylith">
-
-        <EditText
-            android:id="@+id/editTextPass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:inputType="textPassword"
-            android:textColor="@color/textColorSingin" />
-
-    </android.support.design.widget.TextInputLayout>
+        android:layout_marginTop="10dp"
+        android:hint="@string/password"
+        android:maxLength="10"
+        android:inputType="textPassword"
+        android:textColorHint="@color/graylith"
+        android:textSize="20sp"
+        app:met_baseColor="@color/graylith"
+        app:met_floatingLabel="highlight"
+        app:met_primaryColor="@android:color/white"
+        app:met_singleLineEllipsis="true"
+        fancy:met_maxCharacters="10"
+        fancy:met_minCharacters="6"
+        fancy:met_textColorHint="@color/graylith"
+        fancy:met_underlineColor="@color/graylith" />
 
     <com.rilixtech.materialfancybutton.MaterialFancyButton
+        android:layout_below="@id/editTextPass"
         android:id="@+id/btnLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="10dp"
         android:paddingBottom="10dp"
@@ -70,6 +77,8 @@
         fancy:mfb_textSize="16sp" />
 
     <LinearLayout
+        android:id="@+id/orLayout"
+        android:layout_below="@id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -103,12 +112,13 @@
 
     <TextView
         android:id="@+id/tvSingup"
+        android:layout_below="@id/orLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"
         android:text="@string/singup"
         android:textColor="@color/textColorSingin"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:padding="10dp"/>
 
-</LinearLayout>
+</RelativeLayout>

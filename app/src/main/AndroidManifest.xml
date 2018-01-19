@@ -16,18 +16,20 @@
         <activity
             android:name=".activity.LoginandSignupActivity"
             android:theme="@style/LoginTextLayout">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".activity.UserInfoActivity"
             android:theme="@style/usertextcolor" />
         <activity
             android:name=".activity.MainActivity"
-            android:theme="@style/NoActionBar" />
+            android:theme="@style/NoActionBar"/>
         <activity
             android:name=".activity.AddDeviceActivity"
             android:theme="@style/usertextcolor" />
@@ -35,8 +37,9 @@
             android:name=".activity.DeviceDetailActivity"
             android:theme="@style/usertextcolor" />
         <activity android:name=".activity.DeviceDetailEmpActivity" />
-        <activity android:name=".activity.TransitionDetailActivity"
-            android:theme="@style/NoActionBar"/>
+        <activity
+            android:name=".activity.TransitionDetailActivity"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activity.UserinfoUpdateActivity"
             android:theme="@style/usertextcolor" />
@@ -45,9 +48,21 @@
             android:theme="@style/usertextcolor" />
 
         <service
-            android:name=".service.CountItem"
-            android:enabled="true"
-            android:exported="true"></service>
+            android:name=".MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <service
+            android:name=".MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <meta-data android:name="com.google.firebase.messaging.default_notification_channel_id" android:value="default_channel_id" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/icon_promptnow" />
+        <meta-data android:name="com.google.firebase.messaging.default_notification_color" android:resource="@color/colorAccent" />
     </application>
 
 </manifest>

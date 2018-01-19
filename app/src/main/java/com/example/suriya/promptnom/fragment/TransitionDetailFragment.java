@@ -139,10 +139,12 @@ public class TransitionDetailFragment extends Fragment {
                             tvDateReturn.setVisibility(View.VISIBLE);
                             tvStatus.setTextColor(getResources().getColor(R.color.donestate));
                             tvStatus.setText("Done");
+                            tvStatus.setVisibility(View.VISIBLE);
                             btnReturn.setVisibility(View.GONE);
                         } else {
                             tvStatus.setTextColor(getResources().getColor(R.color.lendstate));
                             tvStatus.setText("Lend");
+                            tvStatus.setVisibility(View.VISIBLE);
                             if (ruleID.equals("Employee")) {
                                 btnReturn.setVisibility(View.VISIBLE);
                             }

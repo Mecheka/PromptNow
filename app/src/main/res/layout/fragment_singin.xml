@@ -1,63 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fancy="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/loginBG"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingBottom="16dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pleas select your image profile"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:textSize="20sp"
+            android:textColor="@color/graylith"
+            android:id="@+id/tvSelect"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/icon"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_below="@+id/tvSelect"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/icon_promptnow" />
+            android:layout_marginTop="14dp"
+            android:src="@drawable/icon_gallery" />
 
-        <android.support.design.widget.TextInputLayout
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/editTextName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/editTextEmail"
+            android:layout_below="@+id/icon"
+            android:layout_marginRight="16dp"
+            android:hint="@string/name"
+            android:textColorHint="@color/graylith"
+            android:textSize="20sp"
+            app:met_baseColor="@color/graylith"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@android:color/white"
+            app:met_singleLineEllipsis="true"
+            fancy:met_textColorHint="@color/graylith"
+            fancy:met_underlineColor="@color/graylith"
+            app:met_minCharacters="5"/>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/editTextLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextName"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            android:textColorHint="@color/graylith">
+            android:hint="@string/lastname"
+            android:textColorHint="@color/graylith"
+            android:textSize="20sp"
+            app:met_baseColor="@color/graylith"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@android:color/white"
+            app:met_singleLineEllipsis="true"
+            fancy:met_textColorHint="@color/graylith"
+            fancy:met_underlineColor="@color/graylith"
+            app:met_minCharacters="5"/>
 
-            <EditText
-                android:id="@+id/editTextEmail"
-                android:layout_width="match_parent"
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/editTextEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextLastName"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:textColorHint="@color/graylith"
+            android:textSize="20sp"
+            app:met_baseColor="@color/graylith"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@android:color/white"
+            app:met_singleLineEllipsis="true"
+            fancy:met_textColorHint="@color/graylith"
+            fancy:met_underlineColor="@color/graylith" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/editTextPass"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextEmail"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:maxLength="10"
+            android:textColorHint="@color/graylith"
+            android:textSize="20sp"
+            app:met_baseColor="@color/graylith"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@android:color/white"
+            app:met_singleLineEllipsis="true"
+            fancy:met_maxCharacters="10"
+            fancy:met_minCharacters="6"
+            fancy:met_textColorHint="@color/graylith"
+            fancy:met_underlineColor="@color/graylith" />
+
+        <RadioGroup
+            android:id="@+id/rgOperator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:checkedButton="@id/rbAdmin"
+            android:layout_below="@id/editTextPass"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <RadioButton
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:textColor="@color/textColorSingin" />
+                android:id="@+id/rbAdmin"
+                android:text="@string/admin"
+                android:textColor="@color/graylith"
+                android:buttonTint="@color/graylith"/>
 
-        </android.support.design.widget.TextInputLayout>
+            <RadioButton
+                android:id="@+id/rbEmp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/employee"
+                android:textColor="@color/graylith"
+                android:buttonTint="@color/graylith"/>
 
-        <android.support.design.widget.TextInputLayout
+        </RadioGroup>
+
+        <Spinner
+            android:id="@+id/spPos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:entries="@array/pos"
             android:layout_marginRight="16dp"
+            android:layout_below="@id/rgOperator"
             android:layout_marginTop="8dp"
-            android:textColorHint="@color/graylith">
+            android:layout_marginLeft="10dp"
+            android:visibility="gone"
+            android:theme="@style/Widget.AppCompat.DropDownItem.Spinner"/>
 
-            <EditText
-                android:id="@+id/editTextPass"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:inputType="textPassword"
-                android:textColor="@color/textColorSingin" />
-
-        </android.support.design.widget.TextInputLayout>
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/editTextPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spPos"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:hint="@string/phone"
+            android:inputType="phone"
+            android:maxLength="10"
+            android:textColorHint="@color/graylith"
+            android:textSize="20sp"
+            app:met_baseColor="@color/graylith"
+            app:met_floatingLabel="highlight"
+            app:met_primaryColor="@android:color/white"
+            app:met_singleLineEllipsis="true"
+            fancy:met_textColorHint="@color/graylith"
+            fancy:met_underlineColor="@color/graylith" />
 
         <com.rilixtech.materialfancybutton.MaterialFancyButton
             android:id="@+id/btnSingup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/editTextPhone"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="16dp"
@@ -74,8 +189,10 @@
             fancy:mfb_textSize="16sp" />
 
         <LinearLayout
+            android:id="@+id/orLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/btnSingup"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="10dp"
@@ -109,20 +226,23 @@
             android:id="@+id/tvBacttologin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/back_to_login"
+            android:layout_below="@id/orLayout"
+            android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
+            android:text="@string/back_to_login"
             android:textColor="@color/textColorSingin"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:padding="10dp"/>
 
-    </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        style="@style/AppCompatAlertDialogStyle"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="@style/AppCompatAlertDialogStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone" />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</ScrollView>

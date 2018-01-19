@@ -6,9 +6,17 @@
     android:layout_height="match_parent"
     tools:context="com.example.suriya.promptnom.activity.UpdateDeviceActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <FrameLayout
         android:id="@+id/contentContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolBar"/>
 
 </RelativeLayout>

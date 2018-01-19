@@ -49,7 +49,7 @@ public class ItemDeviceAdapter extends BaseAdapter {
         }
         ItemDevice itemDevice = (ItemDevice)getItem(i);
         item.setTextNumber(itemDevice.getItemNumber());
-        item.setStatusText(itemDevice.getItemStatus());
+        item.setIconStatus(itemDevice.getItemStatus());
         return item;
     }
 }

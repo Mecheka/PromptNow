@@ -52,11 +52,11 @@ public class ListenTransition extends Service implements ChildEventListener {
         if (ruleID != null) {
             if (ruleID.equals("Admin")) {
 
-                mDataRefTran.addChildEventListener(this);
+                    mDataRefTran.addChildEventListener(this);
 
             }
         }
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY_COMPATIBILITY;
     }
 
     @Override

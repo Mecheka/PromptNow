@@ -1,5 +1,6 @@
 package com.example.suriya.promptnom.fragment;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,14 +28,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
+import com.rengwuxian.materialedittext.MaterialEditText;
 import com.rilixtech.materialfancybutton.MaterialFancyButton;
+
+import java.util.regex.Pattern;
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 public class LoginFragment extends Fragment implements View.OnClickListener {
 
-    private EditText editTextEmail, editTextPass;
+    private MaterialEditText editTextEmail, editTextPass;
     private com.rilixtech.materialfancybutton.MaterialFancyButton btnLogin;
     private TextView tvSingup;
     private ProgressDialog loadingDialog;
@@ -71,8 +74,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     private void initInstances(View rootView) {
         // Init 'View' instance(s) with rootView.findViewById here
-        editTextEmail = (EditText) rootView.findViewById(R.id.editTextEmail);
-        editTextPass = (EditText) rootView.findViewById(R.id.editTextPass);
+        editTextEmail = (MaterialEditText) rootView.findViewById(R.id.editTextEmail);
+        editTextPass = (MaterialEditText) rootView.findViewById(R.id.editTextPass);
         btnLogin = (MaterialFancyButton) rootView.findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(this);
         tvSingup = (TextView) rootView.findViewById(R.id.tvSingup);
@@ -126,11 +129,26 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private boolean isValidEmaillId(String email){
+
+        return Pattern.compile("^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]{1}|[\\w-]{2,}))@"
+                + "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+                + "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+                + "[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
+                + "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})$").matcher(email).matches();
+    }
+
     private void loginEmail() {
 
         String email = editTextEmail.getText().toString().trim();
         String pass = editTextPass.getText().toString();
 
+        if (isValidEmaillId(email) == false){
+            editTextEmail.setError("Email Badly format");
+            editTextEmail.requestFocus();
+            return;
+        }
         if (email.isEmpty()) {
             editTextEmail.setError("Enter your Email");
             editTextEmail.requestFocus();
@@ -160,12 +178,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Employee emp = dataSnapshot.getValue(Employee.class);
                                     EmployeeManager.getInstance().setRuleID(emp.getRuleID());
-                                    Log.d("RuleID ", emp.getRuleID());
-                                    Intent intent = new Intent(getActivity().getApplicationContext(),
-                                            MainActivity.class);
-                                    intent.putExtra("first", 1);
-                                    startActivity(intent);
-                                    getActivity().finish();
+                                    Activity activity = getActivity();
+                                    if (activity != null) {
+                                        Intent intent = new Intent(Contextor.getInstance().getContext().getApplicationContext(),
+                                                MainActivity.class);
+                                        intent.putExtra("first", 1);
+                                        startActivity(intent);
+                                        getActivity().finish();
+                                    }
                                 }
 
                                 @Override

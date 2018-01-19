@@ -20,7 +20,6 @@
         <item name="colorPrimary">@color/graylith</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/graylith</item>
-
         <item name="colorControlNormal">@color/graylith</item>
         <item name="colorControlActivated">@color/graylith</item>
 
@@ -55,6 +54,12 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/loginBG</item>
+
+    </style>
+    
+    <style name="mySpinnerItemStyle" parent="@style/Widget.AppCompat.DropDownItem.Spinner">
+
+        <item name="android:textColor">@color/graylith</item>
 
     </style>
 

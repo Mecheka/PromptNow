@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 import com.rilixtech.materialfancybutton.MaterialFancyButton;
 
 /**
@@ -91,7 +92,7 @@ public class UsetinfoDetailFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Employee emp = dataSnapshot.getValue(Employee.class);
-                Glide.with(getActivity()).load(user.getPhotoUrl().toString())
+                Glide.with(Contextor.getInstance().getContext().getApplicationContext()).load(user.getPhotoUrl().toString())
                         .apply(RequestOptions.circleCropTransform())
                         .into(imgProfile);
                 tvName.setText(emp.getEmpName());
