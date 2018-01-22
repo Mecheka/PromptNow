@@ -25,10 +25,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.suriya.promptnom.R;
+import com.example.suriya.promptnom.activity.ConnectUserActivity;
 import com.example.suriya.promptnom.activity.UpdateDeviceActivity;
 import com.example.suriya.promptnom.adapter.ItemDeviceAdapter;
 import com.example.suriya.promptnom.manager.EmployeeManager;
 import com.example.suriya.promptnom.util.Device;
+import com.example.suriya.promptnom.util.Employee;
 import com.example.suriya.promptnom.util.ItemDevice;
 import com.example.suriya.promptnom.util.ReDevice;
 import com.example.suriya.promptnom.util.Transition;
@@ -64,9 +66,10 @@ public class DeviceDetailFragment extends Fragment implements View.OnClickListen
     private DatabaseReference mDataRefTran;
     private DatabaseReference mDataRefItem;
     private DatabaseReference mDataRefUserTran;
-    private DatabaseReference mRootRef;
+    private DatabaseReference mDataRefUser;
     private DatabaseReference mDataRefDevice;
     private FirebaseAuth mAuth;
+    private Employee employee = null;
 
     public DeviceDetailFragment() {
         super();
@@ -87,6 +90,7 @@ public class DeviceDetailFragment extends Fragment implements View.OnClickListen
         mDataRefItem = FirebaseDatabase.getInstance().getReference("Item");
         mDataRefUserTran = FirebaseDatabase.getInstance().getReference("User-Transition");
         mDataRefDevice = FirebaseDatabase.getInstance().getReference("Device");
+        mDataRefUser = FirebaseDatabase.getInstance().getReference("Employee");
         mAuth = FirebaseAuth.getInstance();
 
     }
@@ -163,32 +167,107 @@ public class DeviceDetailFragment extends Fragment implements View.OnClickListen
         listViewItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int position, long l) {
+                final ItemDevice itemDevice = itemList.get(position);
                 if (ruleIDEmp.equals("Employee")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),
-                            R.style.AppCompatAlertDialogStyle);
-                    builder.setMessage("คุณต้องการยืมอุปกรณ์หรือไม่").setCancelable(false)
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (itemDevice.getItemStatus().equals("Done")) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),
+                                R.style.AppCompatAlertDialogStyle);
+                        builder.setMessage("คุณต้องการยืมอุปกรณ์หรือไม่").setCancelable(false)
+                                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                                    ItemDevice itemDevice = itemList.get(position);
-                                    if (itemDevice.getItemStatus().equals("Lend")){
-                                        Toast.makeText(getActivity(), "อปกรณ์นี้ได้ถูกยืมไปแล้ว", Toast.LENGTH_SHORT).show();
-                                    }else {
-                                        lendDevice(itemDevice.getItemId(), itemDevice.getItemNumber());
+
+                                        if (itemDevice.getItemStatus().equals("Lend")) {
+                                            Toast.makeText(getActivity(), "อปกรณ์นี้ได้ถูกยืมไปแล้ว", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            lendDevice(itemDevice.getItemId(), itemDevice.getItemNumber());
+                                        }
                                     }
-                                                                    }
-                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();
+                                }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.cancel();
+                            }
+                        });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
+                    } else {
+                        showUserTranDialog(itemDevice.getItemId());
+                    }
                 }
             }
         });
+    }
+
+    private void showUserTranDialog(final String itemId) {
+
+        final AlertDialog.Builder dBuilder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_user_tran, null);
+        dBuilder.setView(dialogView);
+        dBuilder.setTitle("ชื่อผู้ยืม");
+
+        final TextView tvUserTran = (TextView) dialogView.findViewById(R.id.tvUserTran);
+        final TextView tvDateLend = (TextView) dialogView.findViewById(R.id.tvDateLend);
+        Button btnCancle = (Button) dialogView.findViewById(R.id.btnCancle);
+        Button btnConn = (Button) dialogView.findViewById(R.id.btnConn);
+
+        mDataRefTran.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot tranData : dataSnapshot.getChildren()) {
+                    final Transition tran = tranData.getValue(Transition.class);
+                    if (tran.getItemID().equals(itemId) && tran.isLendState() == true){
+
+                        mDataRefUser.child(tran.getEmpID()).addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Employee emp = dataSnapshot.getValue(Employee.class);
+                                employee = emp;
+                                tvUserTran.setText("ผู้ยืม : " + emp.getEmpName());
+                                tvDateLend.setText("ยืมเมื่อ : " + tran.getDateLand());
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        final AlertDialog dialog = dBuilder.create();
+        dialog.show();
+
+        btnCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                dialog.dismiss();
+
+            }
+        });
+
+        btnConn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+                Intent sendEmp = new Intent(getActivity(), ConnectUserActivity.class);
+                sendEmp.putExtra("Employee", employee);
+                startActivity(sendEmp);
+                dialog.dismiss();
+                
+            }
+        });
+
     }
 
     private void loadDevice(ReDevice reDevice) {
@@ -247,7 +326,7 @@ public class DeviceDetailFragment extends Fragment implements View.OnClickListen
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_update_item, null);
         dBuilder.setView(dialogView);
-        dBuilder.setTitle("Update item");
+        dBuilder.setTitle("แก้ไขอุปกรณ์");
 
         final EditText etNumber = (EditText) dialogView.findViewById(R.id.etNumber);
         final Spinner spStatusItem = (Spinner) dialogView.findViewById(R.id.spStatusItem);
@@ -332,7 +411,7 @@ public class DeviceDetailFragment extends Fragment implements View.OnClickListen
         Intent intent = getActivity().getIntent();
         ReDevice reDevice = intent.getParcelableExtra("ReDevice");
         Device device = new Device(reDevice.getDeviceID(), reDevice.getUrlPhotoDevice(), reDevice.getBrand(),
-                reDevice.getDeviceName(), reDevice.getDeviceCpu(), reDevice.getDeviceRam(),reDevice.getDeviceRom(),
+                reDevice.getDeviceName(), reDevice.getDeviceCpu(), reDevice.getDeviceRam(), reDevice.getDeviceRom(),
                 reDevice.getDeviceRam(), reDevice.getDeviceOS(), true);
         mDataRefDevice.child(reDevice.getDeviceID()).setValue(device).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
@@ -347,8 +426,8 @@ public class DeviceDetailFragment extends Fragment implements View.OnClickListen
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_DEVICE){
-            if (resultCode == RESULT_OK){
+        if (requestCode == REQUEST_DEVICE) {
+            if (resultCode == RESULT_OK) {
                 ReDevice reDevice = data.getParcelableExtra("ReDevice");
                 loadDevice(reDevice);
             }

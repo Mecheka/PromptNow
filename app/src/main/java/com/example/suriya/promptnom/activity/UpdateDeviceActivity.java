@@ -37,6 +37,7 @@ public class UpdateDeviceActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        return super.onSupportNavigateUp();
+        finish();
+        return true;
     }
 }

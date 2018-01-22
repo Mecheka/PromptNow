@@ -1,10 +1,13 @@
 package com.example.suriya.promptnom.util;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by Suriya on 6/12/2560.
  */
 
-public class Employee {
+public class Employee implements Parcelable{
 
     String empID;
     String empName;
@@ -13,6 +16,7 @@ public class Employee {
     String posID;
     String phone;
     String email;
+    String imageUrl;
 
     public Employee(){
 
@@ -27,6 +31,40 @@ public class Employee {
         this.phone = phone;
         this.email = email;
     }
+
+    public Employee(String empID, String empName, String empLastname, String ruleID, String posID, String phone, String email, String imageUrl) {
+        this.empID = empID;
+        this.empName = empName;
+        this.empLastname = empLastname;
+        this.ruleID = ruleID;
+        this.posID = posID;
+        this.phone = phone;
+        this.email = email;
+        this.imageUrl = imageUrl;
+    }
+
+    protected Employee(Parcel in) {
+        empID = in.readString();
+        empName = in.readString();
+        empLastname = in.readString();
+        ruleID = in.readString();
+        posID = in.readString();
+        phone = in.readString();
+        email = in.readString();
+        imageUrl = in.readString();
+    }
+
+    public static final Creator<Employee> CREATOR = new Creator<Employee>() {
+        @Override
+        public Employee createFromParcel(Parcel in) {
+            return new Employee(in);
+        }
+
+        @Override
+        public Employee[] newArray(int size) {
+            return new Employee[size];
+        }
+    };
 
     public String getEmpID() {
         return empID;
@@ -82,5 +120,30 @@ public class Employee {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(empID);
+        parcel.writeString(empName);
+        parcel.writeString(empLastname);
+        parcel.writeString(ruleID);
+        parcel.writeString(posID);
+        parcel.writeString(phone);
+        parcel.writeString(email);
+        parcel.writeString(imageUrl);
     }
 }

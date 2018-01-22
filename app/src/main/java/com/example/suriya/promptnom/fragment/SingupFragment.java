@@ -362,7 +362,7 @@ public class SingupFragment extends Fragment implements View.OnClickListener {
 
                                             user.updateProfile(userProfile);
 
-                                            Employee emp = new Employee(userID, name, lastname, finalRule, pos, phone, email);
+                                            Employee emp = new Employee(userID, name, lastname, finalRule, pos, phone, email, downloadUrl);
 
                                             EmployeeManager.getInstance().setRuleID(finalRule1);
 
@@ -402,7 +402,7 @@ public class SingupFragment extends Fragment implements View.OnClickListener {
 
                                             user.updateProfile(userProfile);
 
-                                            Employee emp = new Employee(userID, name, lastname, finalRule, pos, phone, email);
+                                            Employee emp = new Employee(userID, name, lastname, finalRule, pos, phone, email, dawnloadUrl);
 
                                             EmployeeManager.getInstance().setRuleID(finalRule1);
 

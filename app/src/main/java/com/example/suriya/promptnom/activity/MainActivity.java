@@ -184,13 +184,13 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         if (ruleID != null) {
             if (ruleID.equals("Admin")) {
-                adapter.addFragment(DeviceFragment.newInstance(), "อุปกรณ์");
-                adapter.addFragment(TransitonFragment.newInstance(), "รายการยืม");
+                adapter.addFragment(DeviceFragment.newInstance(), getResources().getString(R.string.device));
+                adapter.addFragment(TransitonFragment.newInstance(), getResources().getString(R.string.lendandreturn));
                 adapter.addFragment(AllTransitionFragment.newInstance(), "ประวัติการยืมอุปกรณ์");
                 viewPager.setAdapter(adapter);
             } else {
-                adapter.addFragment(DeviceFragment.newInstance(), "ยืมอุปกรณ์");
-                adapter.addFragment(TransitonFragment.newInstance(), "รายการยืม");
+                adapter.addFragment(DeviceFragment.newInstance(), getResources().getString(R.string.device));
+                adapter.addFragment(TransitonFragment.newInstance(), getResources().getString(R.string.lendandreturn));
                 adapter.addFragment(AllTransitionFragment.newInstance(), "ประวัติการยืมอุปกรณ์");
                 viewPager.setAdapter(adapter);
             }

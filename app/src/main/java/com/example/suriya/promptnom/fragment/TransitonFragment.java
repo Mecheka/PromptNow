@@ -3,7 +3,9 @@ package com.example.suriya.promptnom.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.TextView;
 import com.example.suriya.promptnom.R;
 import com.example.suriya.promptnom.activity.TransitionDetailActivity;
 import com.example.suriya.promptnom.adapter.TransitionAdapter;
+import com.example.suriya.promptnom.adapter.ViewPagerAdapter;
 import com.example.suriya.promptnom.manager.EmployeeManager;
 import com.example.suriya.promptnom.util.Device;
 import com.example.suriya.promptnom.util.Employee;
@@ -41,16 +44,8 @@ import java.util.HashMap;
  */
 public class TransitonFragment extends Fragment {
 
-    private DatabaseReference mDataRefDevice, mDataRefItem, mDataRefTransition,
-            mDataRefUserTran, mDataRefUser, mRootRef;
-    private FirebaseAuth mAuth;
-    private ProgressBar progressBar;
-    private TextView tvNoDev;
-    private ListView listItem;
-    private TransitionAdapter adapter;
-    private ArrayList<ReTransition> transitionsList = new ArrayList<>();
-    private ValueEventListener adminValueEventListener;
-    private ValueEventListener employeeValueEventListener;
+    private TabLayout tabLayout;
+    private ViewPager mViewPager;
 
     public TransitonFragment() {
         super();
@@ -66,13 +61,6 @@ public class TransitonFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRootRef = FirebaseDatabase.getInstance().getReference();
-        mDataRefDevice = mRootRef.child("Device");
-        mDataRefItem = mRootRef.child("Item");
-        mDataRefTransition = mRootRef.child("Transition");
-        mDataRefUserTran = mRootRef.child("User-Transition");
-        mDataRefUser = mRootRef.child("Employee");
-        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -85,220 +73,36 @@ public class TransitonFragment extends Fragment {
 
     private void initInstances(View rootView) {
         // Init 'View' instance(s) with rootView.findViewById here
-        progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
-        listItem = (ListView) rootView.findViewById(R.id.listViewTran);
 
+        mViewPager = (ViewPager)rootView.findViewById(R.id.viewpager);
+        setupViewPager(mViewPager);
+
+        tabLayout = (TabLayout)rootView.findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
+
+    }
+
+    private void setupViewPager(ViewPager mViewPager) {
+
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter.addFragment(LendTransirionFragment.newInstance(), getResources().getString(R.string.lend));
+        adapter.addFragment(ReturnTransirionFragment.newInstance(), getResources().getString(R.string.return_device));
+        mViewPager.setAdapter(adapter);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            adapter.notifyDataSetChanged();
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        String ruleIDEmp = EmployeeManager.getInstance().getRuleID();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String userID = user.getUid();
-        progressBar.setVisibility(View.VISIBLE);
-
-        if (ruleIDEmp.equals("Admin")) {
-
-            adminValueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    transitionsList.clear();
-                    for (DataSnapshot dataTran : dataSnapshot.getChildren()) {
-                        final Transition tran = dataTran.getValue(Transition.class);
-                        mDataRefDevice.child(tran.getDeviceID()).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                final ReDevice device = dataSnapshot.getValue(ReDevice.class);
-                                mDataRefItem.child(device.getDeviceID()).child(tran.getItemID())
-                                        .addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                transitionsList.clear();
-                                                final ItemDevice item = dataSnapshot.getValue(ItemDevice.class);
-                                                mDataRefUser.child(tran.getEmpID()).addValueEventListener(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                                        Employee emp = dataSnapshot.getValue(Employee.class);
-                                                        ReTransition reTransition = new ReTransition();
-                                                        reTransition.setBrand(device.getBrand());
-                                                        reTransition.setName(device.getDeviceName());
-                                                        reTransition.setNumber(item.getItemNumber());
-                                                        reTransition.setStatus(item.getItemStatus());
-                                                        reTransition.setUrlDevice(device.getUrlPhotoDevice());
-                                                        reTransition.setEmpID(tran.getEmpID());
-                                                        reTransition.setEmpName(emp.getEmpName());
-                                                        reTransition.setDateLend(tran.getDateLand());
-                                                        reTransition.setItemID(item.getItemId());
-                                                        reTransition.setTranID(tran.getTranID());
-                                                        reTransition.setDeviceID(device.getDeviceID());
-                                                        if (tran.isLendState() == true) {
-                                                            transitionsList.add(0, reTransition);
-                                                        }
-
-                                                        /**if (reTransition.getStatus().equals("Lend")){
-                                                         transitionsList.add(reTransition);
-                                                         }*/
-                                                        adapter = new TransitionAdapter(getActivity(), transitionsList);
-                                                        listItem.setAdapter(adapter);
-                                                        adapter.notifyDataSetChanged();
-                                                        progressBar.setVisibility(View.GONE);
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(DatabaseError databaseError) {
-
-                                                    }
-                                                });
-
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
-                                        });
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            };
-        } else {
-            employeeValueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    transitionsList.clear();
-                    for (DataSnapshot dataTran : dataSnapshot.getChildren()) {
-                        final Transition tran = dataTran.getValue(Transition.class);
-
-                        mDataRefDevice.child(tran.getDeviceID()).addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                transitionsList.clear();
-                                final ReDevice device = dataSnapshot.getValue(ReDevice.class);
-                                mDataRefItem.child(device.getDeviceID()).child(tran.getItemID())
-                                        .addValueEventListener(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                transitionsList.clear();
-                                                final ItemDevice item = dataSnapshot.getValue(ItemDevice.class);
-                                                mDataRefUser.child(tran.getEmpID()).addValueEventListener(new ValueEventListener() {
-                                                    @Override
-                                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                                        Employee emp = dataSnapshot.getValue(Employee.class);
-                                                        ReTransition reTransition = new ReTransition();
-                                                        reTransition.setBrand(device.getBrand());
-                                                        reTransition.setName(device.getDeviceName());
-                                                        reTransition.setNumber(item.getItemNumber());
-                                                        reTransition.setStatus(item.getItemStatus());
-                                                        reTransition.setUrlDevice(device.getUrlPhotoDevice());
-                                                        reTransition.setEmpID(tran.getEmpID());
-                                                        reTransition.setEmpName(emp.getEmpName());
-                                                        reTransition.setDateLend(tran.getDateLand());
-                                                        reTransition.setItemID(item.getItemId());
-                                                        reTransition.setTranID(tran.getTranID());
-                                                        reTransition.setDeviceID(device.getDeviceID());
-                                                        if (tran.isLendState() == true) {
-                                                            transitionsList.add(0, reTransition);
-                                                        }
-                                                        /**if (reTransition.getStatus().equals("Lend")){
-                                                         transitionsList.add(reTransition);
-                                                         }*/
-                                                        adapter = new TransitionAdapter(getActivity(), transitionsList);
-                                                        listItem.setAdapter(adapter);
-                                                        adapter.notifyDataSetChanged();
-                                                        progressBar.setVisibility(View.GONE);
-                                                    }
-
-                                                    @Override
-                                                    public void onCancelled(DatabaseError databaseError) {
-
-                                                    }
-                                                });
-
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
-                                        });
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            };
-        }
-
-        // Get Database
-        if (ruleIDEmp.equals("Admin")) {
-            mDataRefTransition.addValueEventListener(adminValueEventListener);
-            listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(getActivity(), TransitionDetailActivity.class);
-                    intent.putExtra("ReTransition", transitionsList.get(i));
-                    startActivity(intent);
-                }
-            });
-        } else if (ruleIDEmp.equals("Employee")) {
-            mDataRefUserTran.child(userID).addValueEventListener(employeeValueEventListener);
-            listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Intent intent = new Intent(getActivity(), TransitionDetailActivity.class);
-                    intent.putExtra("ReTransition", transitionsList.get(i));
-                    startActivity(intent);
-                }
-            });
-        }
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        String ruleID = EmployeeManager.getInstance().getRuleID();
-        if (ruleID.equals("Admin")) {
-            if (adminValueEventListener != null) {
-                mRootRef.removeEventListener(adminValueEventListener);
-            }
-        } else {
-            if (employeeValueEventListener != null) {
-                mRootRef.removeEventListener(employeeValueEventListener);
-            }
-        }
     }
 
     /*

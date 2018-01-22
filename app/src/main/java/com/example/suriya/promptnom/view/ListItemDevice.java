@@ -56,6 +56,7 @@ public class ListItemDevice extends BaseCustomViewGroup {
     private void initInstances() {
         // findViewById here
         tvNumber = (TextView) findViewById(R.id.tvNumber);
+        imgStatusItem = (ImageView)findViewById(R.id.imgStatus);
     }
 
     public void setTextNumber(String text) {

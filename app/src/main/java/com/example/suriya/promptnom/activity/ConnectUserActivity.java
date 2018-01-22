@@ -5,28 +5,32 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import com.example.suriya.promptnom.R;
-import com.example.suriya.promptnom.fragment.TransitionDetailFragment;
+import com.example.suriya.promptnom.fragment.ConnectUserFragment;
+import com.example.suriya.promptnom.util.Employee;
 
-public class TransitionDetailActivity extends AppCompatActivity {
+public class ConnectUserActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transition_detail);
+        setContentView(R.layout.activity_connect_user);
 
-        if (savedInstanceState == null){
+        Employee employee = getIntent().getParcelableExtra("Employee");
+
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.contentContainer, TransitionDetailFragment.newInstance())
+                    .add(R.id.contentContainer, ConnectUserFragment.newInstance(employee))
                     .commit();
         }
+
         initInstance();
     }
 
     private void initInstance() {
 
-        toolbar = (Toolbar)findViewById(R.id.toolBar);
+        toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

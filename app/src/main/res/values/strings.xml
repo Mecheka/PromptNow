@@ -1,14 +1,9 @@
 <resources>
 
     <string name="app_name">PromptNow</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
     <string name="singup">Sing up</string>
     <string name="login">Log in</string>
     <string name="or">OR</string>
-    <string name="name">Name</string>
-    <string name="lastname">Lastname</string>
-    <string name="phone">Phone number</string>
     <string name="admin">Admin</string>
     <string name="employee">Employee</string>
     <string name="save">Save</string>
@@ -16,25 +11,32 @@
     <string name="open_menu">Open Menu</string>
     <string name="close_menu">Close Menu</string>
     <string name="fawi_star">star</string>
-    <string name="profile">Profile</string>
+
     <string name="update">Update</string>
     <string name="add_item">Add Item</string>
     <string name="delete">Delete</string>
     <string name="add_device">Add Device</string>
     <string name="land">Lend</string>
-    <string name="return_device">Return</string>
     <string name="rule">Rule</string>
-    <string name="pos">Position</string>
     <string name="back_to_login">Back to Login</string>
     <string name="select_device">Select Device</string>
 
-    <!-- SpPos -->
-    <string-array name="pos">
-
-        <item>Android Developer</item>
-        <item>Senior Android Developer</item>
-
-    </string-array>
+    <!-- Thai -->
+    <string name="usertran">ผู้ยืม</string>
+    <string name="datelend">ยืมเมื่อ</string>
+    <string name="cancle">ยกเลิก</string>
+    <string name="conn">ติดต่อ</string>
+    <string name="profile">โปรไฟล์</string>
+    <string name="name">ชื่อ</string>
+    <string name="lastname">นามสกุล</string>
+    <string name="pos">ตำแหน่ง</string>
+    <string name="phone">เบอร์ติดต่อ</string>
+    <string name="email">อีเมล</string>
+    <string name="password">รหัาผ่าน</string>
+    <string name="device">อุปกรณ์</string>
+    <string name="lendandreturn">รายการยืม/คืน</string>
+    <string name="lend">ยืม</string>
+    <string name="return_device">คืน</string>
 
     <!-- SpBrand -->
     <string-array name="brand">
