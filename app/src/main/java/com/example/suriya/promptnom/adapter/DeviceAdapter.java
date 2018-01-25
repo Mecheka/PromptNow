@@ -49,7 +49,7 @@ public class DeviceAdapter extends BaseAdapter {
         }
         ReDevice device = (ReDevice) getItem(i);
         item.setImage(device.getUrlPhotoDevice().toString());
-        item.setNameText(device.getBrand()+"\n"+device.getDeviceName());
+        item.setNameText("ยี่ห้อ " + device.getBrand()+"\nรุ่น "+device.getDeviceName());
         return item;
     }
 }

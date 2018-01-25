@@ -195,6 +195,10 @@ public class DeviceDetailFragment extends Fragment implements View.OnClickListen
                     } else {
                         showUserTranDialog(itemDevice.getItemId());
                     }
+                }else {
+                    if (itemDevice.getItemStatus().equals("Lend")) {
+                        showUserTranDialog(itemDevice.getItemId());
+                    }
                 }
             }
         });

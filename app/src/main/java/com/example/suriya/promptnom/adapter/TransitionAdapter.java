@@ -42,16 +42,17 @@ public class TransitionAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         ListTransition item;
-        if (view == null){
+        if (view == null) {
             item = new ListTransition(mContext);
-        }else {
+        } else {
             item = (ListTransition) view;
         }
-        ReTransition itemTransition = (ReTransition)getItem(i);
+        ReTransition itemTransition = (ReTransition) getItem(i);
         item.setImgDevice(itemTransition.getUrlDevice());
-        item.setTvBrand(itemTransition.getBrand() +" "+ itemTransition.getName());
-        item.setTvNumber(itemTransition.getNumber(), itemTransition.getStatus());
-        item.setTvEmpName(itemTransition.getEmpName());
+        item.setTvBrand("ยี่ห้อ " + itemTransition.getBrand() + " " + itemTransition.getName());
+        item.setTvNumber("นัมเบอร์ " + itemTransition.getNumber(), itemTransition.getStatus());
+        item.setTvEmpName("ผู้ยืม " + itemTransition.getEmpName());
+        item.setTvDateLend(itemTransition.getDateLend());
         return item;
     }
 }

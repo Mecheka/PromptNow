@@ -16,6 +16,10 @@ public class Device {
     String deviceOS;
     boolean deleteState;
 
+    public Device(){
+
+    }
+
     public Device(String deviceID, String urlPhotoDevice, String brand, String deviceName, String deviceCpu, String deviceRam, String deviceRom, String displaySize, String deviceOS, boolean deleteState) {
         this.deviceID = deviceID;
         this.urlPhotoDevice = urlPhotoDevice;

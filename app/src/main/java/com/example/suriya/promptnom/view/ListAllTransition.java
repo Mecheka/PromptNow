@@ -2,25 +2,23 @@ package com.example.suriya.promptnom.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.suriya.promptnom.R;
 import com.inthecheesefactory.thecheeselibrary.view.BaseCustomViewGroup;
 import com.inthecheesefactory.thecheeselibrary.view.state.BundleSavedState;
+
+import org.w3c.dom.Text;
 
 /**
  * Created by nuuneoi on 11/16/2014.
  */
 public class ListAllTransition extends BaseCustomViewGroup {
 
-    private ImageView imgDevice;
-    private TextView tvBrand, tvNumber, tvDateLend;
+    private TextView tvBrand, tvNumber, tvDateLend, tvEmpName;
 
     public ListAllTransition(Context context) {
         super(context);
@@ -56,26 +54,27 @@ public class ListAllTransition extends BaseCustomViewGroup {
 
     private void initInstances() {
         // findViewById here
-        imgDevice = (ImageView)findViewById(R.id.imgDevice);
-        tvBrand = (TextView)findViewById(R.id.tvBrandName);
-        tvNumber = (TextView)findViewById(R.id.tvNumber);
-        tvDateLend = (TextView)findViewById(R.id.tvDateLend);
+        tvBrand = (TextView) findViewById(R.id.tvBrandName);
+        tvNumber = (TextView) findViewById(R.id.tvNumber);
+        tvDateLend = (TextView) findViewById(R.id.tvDateLend);
+        tvEmpName = (TextView) findViewById(R.id.tvEmpName);
+
     }
 
-    public void setImgDevice(String URL){
-        Glide.with(getContext()).load(URL).into(imgDevice);
+    public void setTvBrand(String text) {
+        tvBrand.setText(getResources().getString(R.string.brand) + " " + text);
     }
 
-    public void setTvBrand(String text){
-        tvBrand.setText(text);
+    public void setTvNumber(String text) {
+        tvNumber.setText(getResources().getString(R.string.number) + " " + text);
     }
 
-    public void setTvNumber(String text){
-        tvNumber.setText(text);
+    public void setTvDateLend(String text) {
+        tvDateLend.setText(getResources().getString(R.string.datelend) + " " + text);
     }
 
-    public void setTvDateLend(String text){
-        tvDateLend.setText(text);
+    public void setTvEmpName(String text) {
+        tvEmpName.setText(getResources().getString(R.string.usertran) + " " + text);
     }
 
     private void initWithAttrs(AttributeSet attrs, int defStyleAttr, int defStyleRes) {

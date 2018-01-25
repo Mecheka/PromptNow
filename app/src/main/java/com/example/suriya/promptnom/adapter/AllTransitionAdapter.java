@@ -48,10 +48,10 @@ public class AllTransitionAdapter extends BaseAdapter {
             item = (ListAllTransition) view;
         }
         ReTransition tran = (ReTransition)getItem(i);
-        item.setImgDevice(tran.getUrlDevice());
         item.setTvBrand(tran.getBrand()+ " "+tran.getName());
         item.setTvNumber(tran.getNumber());
         item.setTvDateLend(tran.getDateLend());
+        item.setTvEmpName(tran.getEmpName());
         return item;
     }
 }

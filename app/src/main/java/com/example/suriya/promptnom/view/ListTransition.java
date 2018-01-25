@@ -21,7 +21,7 @@ import com.inthecheesefactory.thecheeselibrary.view.state.BundleSavedState;
 public class ListTransition extends BaseCustomViewGroup {
 
     private ImageView imgDevice;
-    private TextView tvBrand, tvNumber, tvEmpName;
+    private TextView tvBrand, tvNumber, tvEmpName, tvDateLend;
 
     public ListTransition(Context context) {
         super(context);
@@ -58,33 +58,36 @@ public class ListTransition extends BaseCustomViewGroup {
     private void initInstances() {
         // findViewById here
         String ruleID = EmployeeManager.getInstance().getRuleID();
-        imgDevice = (ImageView)findViewById(R.id.imgDevice);
-        tvBrand = (TextView)findViewById(R.id.tvBrandName);
-        tvNumber = (TextView)findViewById(R.id.tvNumber);
-        tvEmpName = (TextView)findViewById(R.id.tvEmpName);
-        if (ruleID.equals("Admin")){
+        imgDevice = (ImageView) findViewById(R.id.imgDevice);
+        tvBrand = (TextView) findViewById(R.id.tvBrandName);
+        tvNumber = (TextView) findViewById(R.id.tvNumber);
+        tvEmpName = (TextView) findViewById(R.id.tvEmpName);
+        tvDateLend = (TextView) findViewById(R.id.tvDateLend);
+        if (ruleID.equals("Admin")) {
             tvEmpName.setVisibility(VISIBLE);
         }
     }
 
-    public void setImgDevice(String URL){
+    public void setImgDevice(String URL) {
         Glide.with(getContext()).load(URL).into(imgDevice);
     }
 
-    public void setTvBrand(String text){
+    public void setTvBrand(String text) {
         tvBrand.setText(text);
     }
 
-    public void setTvNumber(String text, String itemStatus){
+    public void setTvNumber(String text, String itemStatus) {
         tvNumber.setText(text);
-        if (itemStatus.equals("Lend")){
-            tvNumber.setTextColor(Color.RED);
-        }else {
-            tvNumber.setTextColor(Color.GREEN);
-        }
     }
-    public void setTvEmpName(String text){
+
+    public void setTvEmpName(String text) {
         tvEmpName.setText(text);
+    }
+
+    public void setTvDateLend(String text) {
+
+        tvDateLend.setText(getResources().getString(R.string.datelend) + " " + text);
+
     }
 
     private void initWithAttrs(AttributeSet attrs, int defStyleAttr, int defStyleRes) {

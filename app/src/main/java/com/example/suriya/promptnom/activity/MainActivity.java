@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ import com.example.suriya.promptnom.fragment.DeviceFragment;
 import com.example.suriya.promptnom.fragment.TransitonFragment;
 import com.example.suriya.promptnom.adapter.ViewPagerAdapter;
 import com.example.suriya.promptnom.manager.EmployeeManager;
-import com.example.suriya.promptnom.service.ListenTransition;
+import com.example.suriya.promptnom.util.Employee;
 import com.example.suriya.promptnom.util.Transition;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -56,8 +57,10 @@ public class MainActivity extends AppCompatActivity {
     private DatabaseReference mData;
     private DatabaseReference mDataRefTran;
     private DatabaseReference mDataRefUserTran;
+    private DatabaseReference mDataRefUser;
     private List<Transition> tranList = new ArrayList<>();
     private int firstLogin = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +71,23 @@ public class MainActivity extends AppCompatActivity {
         mData = FirebaseDatabase.getInstance().getReference("Employee");
         mDataRefUserTran = FirebaseDatabase.getInstance().getReference("User-Transition");
         mDataRefTran = FirebaseDatabase.getInstance().getReference("Transition");
+        mDataRefUser = FirebaseDatabase.getInstance().getReference("Employee");
 
-        FirebaseUser user = mAuth.getCurrentUser();
+        /**if (EmployeeManager.getInstance().getRuleID() == null){
+         String userId = mAuth.getCurrentUser().getUid();
+         mDataRefUser.child(userId).addValueEventListener(new ValueEventListener() {
+        @Override public void onDataChange(DataSnapshot dataSnapshot) {
+        Employee employee = dataSnapshot.getValue(Employee.class);
+        EmployeeManager.getInstance().setRuleID(employee.getRuleID());
+        }
+
+        @Override public void onCancelled(DatabaseError databaseError) {
+
+        }
+        });
+         }*/
+
+        final FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
             finish();
             Intent loginIntent = new Intent(MainActivity.this, LoginandSignupActivity.class);
@@ -171,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.signOut();
                 startActivity(new Intent(MainActivity.this, LoginandSignupActivity.class));
                 finish();
-                Toast.makeText(MainActivity.this, "Log out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "ออกจากระบบ", Toast.LENGTH_SHORT).show();
             }
         });
         AlertDialog alert = builder.create();

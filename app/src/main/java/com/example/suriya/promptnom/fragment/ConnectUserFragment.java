@@ -1,7 +1,11 @@
 package com.example.suriya.promptnom.fragment;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.suriya.promptnom.Manifest;
 import com.example.suriya.promptnom.R;
 import com.example.suriya.promptnom.util.Employee;
 import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
@@ -57,7 +62,7 @@ public class ConnectUserFragment extends Fragment {
         tvName = (TextView) rootView.findViewById(R.id.tvName);
         tvLastName = (TextView) rootView.findViewById(R.id.tvLastName);
         tvPos = (TextView) rootView.findViewById(R.id.tvPosition);
-        tvPhone = (TextView) rootView.findViewById(R.id.tvPhone);
+        tvPhone = (TextView) rootView.findViewById(R.id.tvNumber);
         tvEmail = (TextView) rootView.findViewById(R.id.tvEmail);
 
         // Set !!!
@@ -69,9 +74,20 @@ public class ConnectUserFragment extends Fragment {
         tvName.setText(employee.getEmpName());
         tvLastName.setText(employee.getEmpLastname());
         tvPos.setText(getResources().getString(R.string.pos) + " " + employee.getPosID());
-        tvPhone.setText(getResources().getString(R.string.phone) + " " + employee.getPhone());
+        tvPhone.setText(employee.getPhone());
         tvEmail.setText(getResources().getString(R.string.email) + " " + employee.getEmail());
 
+        tvPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent phoneIntent = new Intent(Intent.ACTION_DIAL);
+                phoneIntent.setData(Uri.parse("tel:" + tvPhone.getText().toString()));
+
+                startActivity(phoneIntent);
+
+            }
+        });
     }
 
     @Override

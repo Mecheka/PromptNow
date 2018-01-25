@@ -17,16 +17,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
 
 import com.bumptech.glide.Glide;
 import com.example.suriya.promptnom.R;
+import com.example.suriya.promptnom.activity.ConnectUserActivity;
 import com.example.suriya.promptnom.manager.EmployeeManager;
 import com.example.suriya.promptnom.util.Employee;
 import com.example.suriya.promptnom.util.ItemDevice;
+import com.example.suriya.promptnom.util.ReDevice;
 import com.example.suriya.promptnom.util.ReTransition;
 import com.example.suriya.promptnom.util.Transition;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,8 +46,14 @@ public class TransitionDetailFragment extends Fragment {
 
     private ImageView imgDevice;
     private TextView tvBrand, tvName, tvNumber, tvEmpName, tvDateLend, tvDateReturn, tvStatus;
-    private com.rilixtech.materialfancybutton.MaterialFancyButton btnReturn;
-    private DatabaseReference mDataRefEmp, mDataRefItem, mDataRefTran, mDataRefUserTran;
+    private com.rilixtech.materialfancybutton.MaterialFancyButton btnReturn, btnLend;
+    private DatabaseReference mDataRefEmp, mDataRefItem, mDataRefTran, mDataRefUserTran,
+            mDataRefDevice;
+    private FirebaseAuth mAuth;
+    private Transition transition_final = null;
+    private ItemDevice itemDevice_final = null;
+    private ArrayList<Transition> lendList = new ArrayList<>();
+    private ArrayList<Transition> returnList = new ArrayList<>();
 
     public TransitionDetailFragment() {
         super();
@@ -62,6 +73,8 @@ public class TransitionDetailFragment extends Fragment {
         mDataRefItem = FirebaseDatabase.getInstance().getReference("Item");
         mDataRefTran = FirebaseDatabase.getInstance().getReference("Transition");
         mDataRefUserTran = FirebaseDatabase.getInstance().getReference("User-Transition");
+        mDataRefDevice = FirebaseDatabase.getInstance().getReference("Device");
+        mAuth = FirebaseAuth.getInstance();
     }
 
     @Override
@@ -88,6 +101,7 @@ public class TransitionDetailFragment extends Fragment {
         tvDateReturn = (TextView) rootView.findViewById(R.id.tvDateReturn);
         tvStatus = (TextView) rootView.findViewById(R.id.tvStatus);
         btnReturn = (MaterialFancyButton) rootView.findViewById(R.id.btnReturn);
+        btnLend = (MaterialFancyButton) rootView.findViewById(R.id.btnLend);
 
         // Get!!!
 
@@ -95,12 +109,12 @@ public class TransitionDetailFragment extends Fragment {
         Glide.with(getActivity()).load(tran.getUrlDevice()).into(imgDevice);
         tvBrand.setText(tran.getBrand());
         tvName.setText(tran.getName());
-        tvNumber.setText("Serail Number " + tran.getNumber());
+        tvNumber.setText(getResources().getString(R.string.number) + " " + tran.getNumber());
         mDataRefEmp.child(tran.getEmpID()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Employee emp = dataSnapshot.getValue(Employee.class);
-                tvEmpName.setText("ผู้ยืม " + emp.getEmpName());
+                tvEmpName.setText(getResources().getString(R.string.tran_emp_name) + " " + emp.getEmpName());
             }
 
             @Override
@@ -108,24 +122,7 @@ public class TransitionDetailFragment extends Fragment {
 
             }
         });
-        tvDateLend.setText("Date Lend " + tran.getDateLend());
-
-        /**mDataRefTran.child(tran.getTranID()).addValueEventListener(new ValueEventListener() {
-        @Override public void onDataChange(DataSnapshot dataSnapshot) {
-        Transition transition = dataSnapshot.getValue(Transition.class);
-        if (transition.isLendState() == false) {
-        btnReturn.setVisibility(View.GONE);
-        tvStatus.setText(tran.getStatus());
-        } else {
-        tvStatus.setText(tran.getStatus());
-        tvStatus.setTextColor(getResources().getColor(R.color.lendstate));
-        }
-        }
-
-        @Override public void onCancelled(DatabaseError databaseError) {
-
-        }
-        });*/
+        tvDateLend.setText(getResources().getString(R.string.datelend) + " " + tran.getDateLend());
 
         mDataRefUserTran.child(tran.getEmpID()).child(tran.getTranID()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -134,20 +131,28 @@ public class TransitionDetailFragment extends Fragment {
                 if (activity != null) {
                     Transition trans = dataSnapshot.getValue(Transition.class);
                     if (trans != null) {
+
                         if (trans.isLendState() == false) {
-                            tvDateReturn.setText("Date Return " + trans.getDateReturn());
+                            tvDateReturn.setText(getResources().getString(R.string.datereturn) + " "
+                                    + trans.getDateReturn());
                             tvDateReturn.setVisibility(View.VISIBLE);
                             tvStatus.setTextColor(getResources().getColor(R.color.donestate));
-                            tvStatus.setText("Done");
+                            tvStatus.setText(getResources().getString(R.string.is_done));
                             tvStatus.setVisibility(View.VISIBLE);
                             btnReturn.setVisibility(View.GONE);
+                            if (ruleID.equals("Employee")) {
+                                btnLend.setVisibility(View.VISIBLE);
+                                tvStatus.setVisibility(View.GONE);
+                            }
                         } else {
                             tvStatus.setTextColor(getResources().getColor(R.color.lendstate));
-                            tvStatus.setText("Lend");
+                            tvStatus.setText(getResources().getString(R.string.is_lend));
                             tvStatus.setVisibility(View.VISIBLE);
                             if (ruleID.equals("Employee")) {
                                 btnReturn.setVisibility(View.VISIBLE);
+                                tvStatus.setVisibility(View.GONE);
                             }
+
                         }
                     }
                 }
@@ -178,6 +183,122 @@ public class TransitionDetailFragment extends Fragment {
                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+            }
+        });
+
+        btnLend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+                builder.setMessage("คุณต้องการยืมอุปกรณ์อีกครั้งหรือไม่").setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                lendDeviceAgain(tran.getItemID(), tran.isLendState());
+                            }
+                        }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
+    }
+
+    private void lendDeviceAgain(final String itemID, boolean lendState) {
+
+        Intent intent = getActivity().getIntent();
+        ReTransition tran = intent.getParcelableExtra("ReTransition");
+
+        mDataRefTran.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                lendList.clear();
+                returnList.clear();
+                for (DataSnapshot dataTran : dataSnapshot.getChildren()) {
+                    Transition newTransition = dataTran.getValue(Transition.class);
+                    transition_final = newTransition;
+                    if (newTransition.getItemID().equals(itemID)) {
+                        if (newTransition.isLendState() == true) {
+                            lendList.add(newTransition);
+                            break;
+                        } else {
+                            returnList.add(newTransition);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        if (lendList.size() == 1) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
+            builder.setMessage("อุปกรณ์ถูกผุ็อื่นยืมไปแล้วต้องการติดต่อผู้ยืมหรือไม่").setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            connectUser(lendList.get(0));
+                        }
+                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+        } else if (lendList.size() == 0) {
+            lendDevice(tran.getDeviceID(), tran.getItemID(), tran.getNumber());
+        }
+
+    }
+
+    private void lendDevice(String deviceID, String itemID, String number) {
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        FirebaseUser user = mAuth.getCurrentUser();
+        mDataRefItem
+                .child(deviceID)
+                .child(itemID);
+        String tranID = mDataRefTran.push().getKey();
+        String empID = user.getUid();
+        String dateLand = dateFormat.format(calendar.getTime());
+
+        Transition tran = new Transition(tranID, itemID, deviceID, empID, dateLand, true);
+
+        ItemDevice itemDevice = new ItemDevice(itemID, number, "Lend");
+        mDataRefTran.child(tranID).setValue(tran);
+        mDataRefUserTran.child(empID).child(tranID).setValue(tran);
+        mDataRefItem.child(deviceID).child(itemID).setValue(itemDevice);
+        Toast.makeText(getActivity(), "ยืมแล้ว ", Toast.LENGTH_SHORT).show();
+
+    }
+
+    private void connectUser(Transition transition) {
+
+        mDataRefEmp.child(transition.getEmpID()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Employee employee = dataSnapshot.getValue(Employee.class);
+                Intent connnectUser = new Intent(getActivity(), ConnectUserActivity.class);
+                connnectUser.putExtra("Employee", employee);
+                startActivity(connnectUser);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 

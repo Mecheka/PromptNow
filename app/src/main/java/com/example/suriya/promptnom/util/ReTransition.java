@@ -13,9 +13,41 @@ public class ReTransition implements Parcelable {
 
     String deviceID, urlDevice, brand, name, itemID, number, status, empID, empName,
             tranID, dateLend, dateReturn;
+    boolean lendState;
 
     public ReTransition() {
 
+    }
+
+    public ReTransition(String deviceID, String urlDevice, String brand, String name, String itemID, String number, String status, String empID, String empName, String tranID, String dateLend, boolean lendState) {
+        this.deviceID = deviceID;
+        this.urlDevice = urlDevice;
+        this.brand = brand;
+        this.name = name;
+        this.itemID = itemID;
+        this.number = number;
+        this.status = status;
+        this.empID = empID;
+        this.empName = empName;
+        this.tranID = tranID;
+        this.dateLend = dateLend;
+        this.lendState = lendState;
+    }
+
+    public ReTransition(String deviceID, String urlDevice, String brand, String name, String itemID, String number, String status, String empID, String empName, String tranID, String dateLend, String dateReturn, boolean lendState) {
+        this.deviceID = deviceID;
+        this.urlDevice = urlDevice;
+        this.brand = brand;
+        this.name = name;
+        this.itemID = itemID;
+        this.number = number;
+        this.status = status;
+        this.empID = empID;
+        this.empName = empName;
+        this.tranID = tranID;
+        this.dateLend = dateLend;
+        this.dateReturn = dateReturn;
+        this.lendState = lendState;
     }
 
     protected ReTransition(Parcel in) {
@@ -31,6 +63,7 @@ public class ReTransition implements Parcelable {
         tranID = in.readString();
         dateLend = in.readString();
         dateReturn = in.readString();
+        lendState = in.readByte() != 0;
     }
 
     public static final Creator<ReTransition> CREATOR = new Creator<ReTransition>() {
@@ -44,27 +77,6 @@ public class ReTransition implements Parcelable {
             return new ReTransition[size];
         }
     };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(deviceID);
-        parcel.writeString(urlDevice);
-        parcel.writeString(brand);
-        parcel.writeString(name);
-        parcel.writeString(itemID);
-        parcel.writeString(number);
-        parcel.writeString(status);
-        parcel.writeString(empID);
-        parcel.writeString(empName);
-        parcel.writeString(tranID);
-        parcel.writeString(dateLend);
-        parcel.writeString(dateReturn);
-    }
 
     public String getDeviceID() {
         return deviceID;
@@ -160,5 +172,35 @@ public class ReTransition implements Parcelable {
 
     public void setDateReturn(String dateReturn) {
         this.dateReturn = dateReturn;
+    }
+
+    public boolean isLendState() {
+        return lendState;
+    }
+
+    public void setLendState(boolean lendState) {
+        this.lendState = lendState;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(deviceID);
+        parcel.writeString(urlDevice);
+        parcel.writeString(brand);
+        parcel.writeString(name);
+        parcel.writeString(itemID);
+        parcel.writeString(number);
+        parcel.writeString(status);
+        parcel.writeString(empID);
+        parcel.writeString(empName);
+        parcel.writeString(tranID);
+        parcel.writeString(dateLend);
+        parcel.writeString(dateReturn);
+        parcel.writeByte((byte) (lendState ? 1 : 0));
     }
 }

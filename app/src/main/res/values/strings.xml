@@ -1,29 +1,27 @@
 <resources>
 
     <string name="app_name">PromptNow</string>
-    <string name="singup">Sing up</string>
-    <string name="login">Log in</string>
-    <string name="or">OR</string>
     <string name="admin">Admin</string>
     <string name="employee">Employee</string>
-    <string name="save">Save</string>
-    <string name="logout">Logout</string>
     <string name="open_menu">Open Menu</string>
     <string name="close_menu">Close Menu</string>
     <string name="fawi_star">star</string>
 
-    <string name="update">Update</string>
-    <string name="add_item">Add Item</string>
-    <string name="delete">Delete</string>
-    <string name="add_device">Add Device</string>
-    <string name="land">Lend</string>
-    <string name="rule">Rule</string>
-    <string name="back_to_login">Back to Login</string>
-    <string name="select_device">Select Device</string>
-
     <!-- Thai -->
+    <string name="update">แก้ไข</string>
+    <string name="add_item">เพิ่มอุปกรณ์</string>
+    <string name="delete">ลบ</string>
+    <string name="add_device">เพิ่มอุปกรณ์</string>
+    <string name="land">ยืม</string>
+    <string name="rule">สิทธิ์</string>
+    <string name="back_to_login">กลับไปยังหน้าเข้าสู่ระบบ</string>
+    <string name="select_device">เลือกอุปกรณ์ที่ต้องการ</string>
+    <string name="save">บันทึก</string>
+    <string name="singup">ลงทะเบียน</string>
+    <string name="or">หรือ</string>
     <string name="usertran">ผู้ยืม</string>
     <string name="datelend">ยืมเมื่อ</string>
+    <string name="datereturn">คืนเมื่อ</string>
     <string name="cancle">ยกเลิก</string>
     <string name="conn">ติดต่อ</string>
     <string name="profile">โปรไฟล์</string>
@@ -35,8 +33,18 @@
     <string name="password">รหัาผ่าน</string>
     <string name="device">อุปกรณ์</string>
     <string name="lendandreturn">รายการยืม/คืน</string>
-    <string name="lend">ยืม</string>
-    <string name="return_device">คืน</string>
+    <string name="lend">ยืมอุปกรณ์</string>
+    <string name="return_device">คืนอุปกรณ์</string>
+    <string name="number">นัมเบอร์</string>
+    <string name="tran_emp_name">ชื่อผู้ยืม</string>
+    <string name="done">พร้อม</string>
+    <string name="logout">ออกจากระบบ</string>
+    <string name="login">เข้าสู่ระบบ</string>
+    <string name="brand">ยี่ห้อ</string>
+    <string name="branname">รุ่น</string>
+    <string name="list_item">รายการอุปกรณ์</string>
+    <string name="is_lend">ถูกยืม</string>
+    <string name="is_done">พร้อมใช้งาน</string>
 
     <!-- SpBrand -->
     <string-array name="brand">
