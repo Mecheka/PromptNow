@@ -28,6 +28,7 @@ public class UpdateDeviceActivity extends AppCompatActivity {
 
         toolbar = (Toolbar)findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("แก้ไขข้อมูลอุปกรณ์");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

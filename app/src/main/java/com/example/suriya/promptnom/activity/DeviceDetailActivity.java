@@ -37,6 +37,7 @@ public class DeviceDetailActivity extends AppCompatActivity {
 
         toolbar = (Toolbar)findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("รายละเอียดอุปกรณ์");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -52,7 +53,6 @@ public class DeviceDetailActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        finish();
         return true;
     }
 }

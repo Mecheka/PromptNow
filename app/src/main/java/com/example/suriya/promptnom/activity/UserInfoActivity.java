@@ -31,6 +31,7 @@ public class UserInfoActivity extends AppCompatActivity {
 
         toolbar = (Toolbar)findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("รายละเอียดอุปกรณ์");
     }
 
     @Override

@@ -303,7 +303,7 @@ public class DeviceDetailFragment extends Fragment implements View.OnClickListen
     private void lendDevice(String itemId, String number) {
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         FirebaseUser user = mAuth.getCurrentUser();
         Intent intent = getActivity().getIntent();
         ReDevice device = intent.getParcelableExtra("ReDevice");

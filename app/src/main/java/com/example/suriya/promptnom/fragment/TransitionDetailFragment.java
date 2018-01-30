@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import com.bumptech.glide.Glide;
 import com.example.suriya.promptnom.R;
 import com.example.suriya.promptnom.activity.ConnectUserActivity;
+import com.example.suriya.promptnom.activity.TransitionDetailActivity;
 import com.example.suriya.promptnom.manager.EmployeeManager;
 import com.example.suriya.promptnom.util.Employee;
 import com.example.suriya.promptnom.util.ItemDevice;
@@ -37,6 +38,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.inthecheesefactory.thecheeselibrary.manager.Contextor;
 import com.rilixtech.materialfancybutton.MaterialFancyButton;
 
 /**
@@ -50,10 +52,9 @@ public class TransitionDetailFragment extends Fragment {
     private DatabaseReference mDataRefEmp, mDataRefItem, mDataRefTran, mDataRefUserTran,
             mDataRefDevice;
     private FirebaseAuth mAuth;
-    private Transition transition_final = null;
-    private ItemDevice itemDevice_final = null;
+    private static Transition trasition = null;
     private ArrayList<Transition> lendList = new ArrayList<>();
-    private ArrayList<Transition> returnList = new ArrayList<>();
+    private boolean refDataTranDone = false;
 
     public TransitionDetailFragment() {
         super();
@@ -209,28 +210,26 @@ public class TransitionDetailFragment extends Fragment {
 
     }
 
-    private void lendDeviceAgain(final String itemID, boolean lendState) {
+    private void lendDeviceAgain(final String itemID, final boolean lendState) {
 
         Intent intent = getActivity().getIntent();
-        ReTransition tran = intent.getParcelableExtra("ReTransition");
+        final ReTransition tran = intent.getParcelableExtra("ReTransition");
 
-        mDataRefTran.addValueEventListener(new ValueEventListener() {
+        refDataTranDone = false;
+
+        mDataRefTran.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 lendList.clear();
-                returnList.clear();
                 for (DataSnapshot dataTran : dataSnapshot.getChildren()) {
-                    Transition newTransition = dataTran.getValue(Transition.class);
-                    transition_final = newTransition;
-                    if (newTransition.getItemID().equals(itemID)) {
-                        if (newTransition.isLendState() == true) {
-                            lendList.add(newTransition);
-                            break;
-                        } else {
-                            returnList.add(newTransition);
-                        }
+                    Transition transition = dataTran.getValue(Transition.class);
+                    if (transition.getItemID().equals(tran.getItemID()) && transition.isLendState() == true) {
+                        trasition = transition;
+                        lendList.add(transition);
+                        refDataTranDone = true;
                     }
                 }
+                nextstep(tran);
             }
 
             @Override
@@ -238,24 +237,34 @@ public class TransitionDetailFragment extends Fragment {
 
             }
         });
+    }
 
-        if (lendList.size() == 1) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppCompatAlertDialogStyle);
-            builder.setMessage("อุปกรณ์ถูกผุ็อื่นยืมไปแล้วต้องการติดต่อผู้ยืมหรือไม่").setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+    private void nextstep(ReTransition tran) {
+        if (refDataTranDone) {
+            if (trasition != null) {
+                if (getActivity() != null) {
+                    Log.d("True transition kyo", "true");
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),
+                            R.style.AppCompatAlertDialogStyle);
+                    builder.setMessage("อุปกรณ์ถูกผุ็อื่นยืมไปแล้วต้องการติดต่อผู้ยืมหรือไม่").setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    connectUser(lendList.get(0));
+                                }
+                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            connectUser(lendList.get(0));
+                            dialogInterface.cancel();
                         }
-                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
+                    });
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    trasition = null;
                 }
-            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-        } else if (lendList.size() == 0) {
+            }
+        } else {
+            Log.d("False transition kyo", "false");
             lendDevice(tran.getDeviceID(), tran.getItemID(), tran.getNumber());
         }
 
@@ -264,7 +273,7 @@ public class TransitionDetailFragment extends Fragment {
     private void lendDevice(String deviceID, String itemID, String number) {
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         FirebaseUser user = mAuth.getCurrentUser();
         mDataRefItem
                 .child(deviceID)
@@ -279,7 +288,7 @@ public class TransitionDetailFragment extends Fragment {
         mDataRefTran.child(tranID).setValue(tran);
         mDataRefUserTran.child(empID).child(tranID).setValue(tran);
         mDataRefItem.child(deviceID).child(itemID).setValue(itemDevice);
-        Toast.makeText(getActivity(), "ยืมแล้ว ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Contextor.getInstance().getContext().getApplicationContext(), "ยืมแล้ว ", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -307,7 +316,7 @@ public class TransitionDetailFragment extends Fragment {
     private void returnDevice(String tranID, String itemID, String empID, String deviceID, String dateLend, String number) {
 
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateReturn = dateFormat.format(calendar.getTime());
 
         Transition tran = new Transition(tranID, itemID, deviceID, empID, dateLend, dateReturn, false);
@@ -323,11 +332,13 @@ public class TransitionDetailFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        lendList.clear();
     }
 
     @Override
     public void onStop() {
         super.onStop();
+
     }
 
     /*

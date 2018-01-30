@@ -32,6 +32,7 @@ public class ConnectUserActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("รายละเอียดผู้ยืม");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

@@ -35,7 +35,7 @@ public class Transition implements Parcelable {
         this.lendState = lendState;
     }
 
-    protected Transition(Parcel in) {
+    public Transition(Parcel in) {
         tranID = in.readString();
         itemID = in.readString();
         deviceID = in.readString();

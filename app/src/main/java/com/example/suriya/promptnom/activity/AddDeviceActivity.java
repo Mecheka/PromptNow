@@ -33,6 +33,7 @@ public class AddDeviceActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("เพิ่มอุปกรณ์");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
