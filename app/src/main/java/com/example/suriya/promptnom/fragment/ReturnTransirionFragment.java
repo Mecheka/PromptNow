@@ -122,7 +122,7 @@ public class ReturnTransirionFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Transition transition = dataSnapshot.getValue(Transition.class);
-                if (transition.isLendState() == true) {
+                if (transition.isLendState() == false) {
 
                     loadDatadevice(transition);
                 }
@@ -131,11 +131,7 @@ public class ReturnTransirionFragment extends Fragment {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Transition newTransition = dataSnapshot.getValue(Transition.class);
-                String key = newTransition.getTranID();
-                int index = mKeyTransition.indexOf(key);
-                transitionList.remove(index);
-                mKeyTransition.remove(index);
-                adapter.notifyDataSetChanged();
+                loadDatadevice(newTransition);
             }
 
             @Override

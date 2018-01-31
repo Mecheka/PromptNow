@@ -246,7 +246,7 @@ public class TransitionDetailFragment extends Fragment {
                     Log.d("True transition kyo", "true");
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),
                             R.style.AppCompatAlertDialogStyle);
-                    builder.setMessage("อุปกรณ์ถูกผุ็อื่นยืมไปแล้วต้องการติดต่อผู้ยืมหรือไม่").setCancelable(false)
+                    builder.setMessage("อุปกรณ์นี้ได้ถูกผู้ยืมไปแล้วต้องการติดต่อผู้ยืมหรือไม่").setCancelable(false)
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

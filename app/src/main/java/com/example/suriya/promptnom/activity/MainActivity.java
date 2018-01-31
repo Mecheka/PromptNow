@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.suriya.promptnom.Base.Utility;
 import com.example.suriya.promptnom.R;
 import com.example.suriya.promptnom.fragment.AllTransitionFragment;
 import com.example.suriya.promptnom.fragment.DeviceFragment;
@@ -322,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
                 });
         AlertDialog alert = builder.create();
         alert.show();
+
     }
 
     @Override
