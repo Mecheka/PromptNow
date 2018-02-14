@@ -176,8 +176,6 @@ public class DeviceDetailFragment extends Fragment implements View.OnClickListen
                                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-
-
                                         if (itemDevice.getItemStatus().equals("Lend")) {
                                             Toast.makeText(getActivity(), "อปกรณ์นี้ได้ถูกยืมไปแล้ว", Toast.LENGTH_SHORT).show();
                                         } else {

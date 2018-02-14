@@ -48,7 +48,7 @@ public class TransitionDetailFragment extends Fragment {
 
     private ImageView imgDevice;
     private TextView tvBrand, tvName, tvNumber, tvEmpName, tvDateLend, tvDateReturn, tvStatus;
-    private com.rilixtech.materialfancybutton.MaterialFancyButton btnReturn, btnLend;
+    private com.rilixtech.materialfancybutton.MaterialFancyButton btnReturn, btnLend, btnConnUser;
     private DatabaseReference mDataRefEmp, mDataRefItem, mDataRefTran, mDataRefUserTran,
             mDataRefDevice;
     private FirebaseAuth mAuth;
@@ -89,7 +89,7 @@ public class TransitionDetailFragment extends Fragment {
     private void initInstances(View rootView) {
         // Init 'View' instance(s) with rootView.findViewById here
         final String ruleID = EmployeeManager.getInstance().getRuleID();
-        Intent intent = getActivity().getIntent();
+        final Intent intent = getActivity().getIntent();
         final ReTransition tran = intent.getParcelableExtra("ReTransition");
         Log.d("DeviceID ", tran.getDeviceID());
         Log.d("ItemID ", tran.getItemID());
@@ -103,6 +103,7 @@ public class TransitionDetailFragment extends Fragment {
         tvStatus = (TextView) rootView.findViewById(R.id.tvStatus);
         btnReturn = (MaterialFancyButton) rootView.findViewById(R.id.btnReturn);
         btnLend = (MaterialFancyButton) rootView.findViewById(R.id.btnLend);
+        btnConnUser = (MaterialFancyButton) rootView.findViewById(R.id.btnConnUser);
 
         // Get!!!
 
@@ -144,6 +145,8 @@ public class TransitionDetailFragment extends Fragment {
                             if (ruleID.equals("Employee")) {
                                 btnLend.setVisibility(View.VISIBLE);
                                 tvStatus.setVisibility(View.GONE);
+                            }else {
+                                btnConnUser.setVisibility(View.VISIBLE);
                             }
                         } else {
                             tvStatus.setTextColor(getResources().getColor(R.color.lendstate));
@@ -152,6 +155,8 @@ public class TransitionDetailFragment extends Fragment {
                             if (ruleID.equals("Employee")) {
                                 btnReturn.setVisibility(View.VISIBLE);
                                 tvStatus.setVisibility(View.GONE);
+                            }else {
+                                btnConnUser.setVisibility(View.VISIBLE);
                             }
 
                         }
@@ -205,6 +210,24 @@ public class TransitionDetailFragment extends Fragment {
                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
+            }
+        });
+
+        btnConnUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDataRefEmp.child(tran.getEmpID()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Employee employee = dataSnapshot.getValue(Employee.class);
+                        intentUser(employee);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
@@ -299,9 +322,7 @@ public class TransitionDetailFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 Employee employee = dataSnapshot.getValue(Employee.class);
-                Intent connnectUser = new Intent(getActivity(), ConnectUserActivity.class);
-                connnectUser.putExtra("Employee", employee);
-                startActivity(connnectUser);
+                intentUser(employee);
 
             }
 
@@ -311,6 +332,12 @@ public class TransitionDetailFragment extends Fragment {
             }
         });
 
+    }
+
+    private void intentUser(Employee employee) {
+        Intent connnectUser = new Intent(getActivity(), ConnectUserActivity.class);
+        connnectUser.putExtra("Employee", employee);
+        startActivity(connnectUser);
     }
 
     private void returnDevice(String tranID, String itemID, String empID, String deviceID, String dateLend, String number) {

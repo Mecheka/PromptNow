@@ -45,6 +45,7 @@
     <string name="list_item">รายการอุปกรณ์</string>
     <string name="is_lend">ถูกยืม</string>
     <string name="is_done">พร้อมใช้งาน</string>
+    <string name="conn_user">ติดต่อผู้ยืม</string>
 
     <!-- SpBrand -->
     <string-array name="brand">

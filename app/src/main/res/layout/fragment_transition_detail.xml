@@ -140,6 +140,24 @@
                     fancy:mfb_text="@string/lend"
                     fancy:mfb_textSize="16sp" />
 
+                <com.rilixtech.materialfancybutton.MaterialFancyButton
+                    android:id="@+id/btnConnUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginTop="8dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:paddingTop="10dp"
+                    fancy:mfb_defaultColor="@color/loginBG"
+                    fancy:mfb_focusColor="@color/colorAccent"
+                    fancy:mfb_radius="30dp"
+                    fancy:mfb_text="@string/conn_user"
+                    fancy:mfb_textSize="16sp"
+                    android:visibility="gone"/>
+
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
